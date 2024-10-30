@@ -1,0 +1,196 @@
+@charset "utf-8";
+
+$footer-padding: 3rem 1.5rem;
+
+@import "~bulma/bulma.sass";
+
+@keyframes rotating {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.rotate {
+  animation: rotating 10s linear infinite;
+}
+
+.section{
+  padding-top: 15px;
+}
+// .sections{
+//   padding-top: 15px;
+// }
+
+// .box
+// {
+//   background-color: #f9f7e4;
+//   color: #122d4f;
+
+// }
+
+// .containers{
+//   margin: auto;
+//   width: 50%;
+//   text-align: center;
+//   // align-items: center;
+// }
+
+.help{
+  text-align:center;
+}
+
+// .column {
+//   float: left;
+//   width: 33%;
+// }
+
+// /* Clear floats after the columns */
+// .row:after {
+//   content: "";
+//   display: table;
+//   clear: both;
+// }
+
+.column {
+  float: left;
+}
+
+.left, .right {
+  width: 48%;
+}
+
+.middle {
+  width: 4%;
+}
+
+.multi {
+  padding-top: 110px;
+  
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+  /* Style untuk dropdown */
+  .dropdown {
+      position: relative;
+      display: inline-block;
+      padding-right: 5px;
+      padding-bottom: 5px;
+  }
+
+  .dropbtn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+  }
+  
+
+  .dropdown-content {
+    display: none;
+    position: relative;
+    top: 100%;
+    left: 0%;
+    width: auto;
+    max-height: 300px;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: #422800 #fbeee0;
+    background-color: #f9f9f9;
+    min-width: 100px; /* Memperbesar lebar dropdown */
+    max-width: 950px; /* Menetapkan lebar maksimum untuk dropdown */
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    padding: 5px;
+    transition: opacity 0.3s;
+    flex-direction: row; /* Mengatur arah kolom ke baris */
+  }
+
+  .dropdown-content::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .dropdown-content::-webkit-scrollbar-track {
+    background: #fbeee0;
+    border-radius: 4px;
+  }
+  
+  .dropdown-content::-webkit-scrollbar-thumb {
+    background-color: #422800;
+    border-radius: 4px;
+    border: 2px solid #fbeee0;
+  }
+
+.dropdown:hover .dropdown-content {
+    display: flex; /* Menggunakan flexbox untuk menampilkan konten */
+}
+.dropdown-content {
+  flex: 1; /* Membuat kolom memiliki lebar yang sama */
+  padding: 10px;
+  // white-space: nowrap; /* Mencegah teks membungkus ke baris baru */
+}
+
+.dropdown-content h3 {
+  margin: 0 0 10px;
+  text-align: left; /* Menyelaraskan teks judul kolom ke kiri */
+  color: rgb(4, 86, 137);
+}
+
+.dropdown-content a {
+  text-decoration: none;
+  color: black;
+  display: block;
+  border: 1px solid;
+  padding: 8px;
+  box-shadow: 3px 6px #888888;
+  margin-bottom: 10px;
+  // padding: 5px 0;
+}
+
+  .dropdown-content a:hover {
+      background-color: #f1f1f1;
+  }
+
+  .navbar-brand {
+      display: flex;
+      align-items: center;
+  }
+
+.box{
+  text-align: left;
+}
+
+.select{
+    min-width: 20px;
+    max-width: 110px;
+    // position: relative;
+}
+
+.navbar-link{
+  // border: dotted;
+  font-size: 15px;
+    
+}
+
+// .dropdown-content {
+//   display: none;
+//   position: fixed;
+//   background-color: #f9f9f9;
+//   min-width: 100px; /* Memperbesar lebar dropdown */
+//   max-width: 850px; /* Menetapkan lebar maksimum untuk dropdown */
+//   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+//   z-index: 100;
+//   padding: 5px;
+//   transition: opacity 0.3s;
+//   flex-direction: row; /* Mengatur arah kolom ke baris */
+// }
