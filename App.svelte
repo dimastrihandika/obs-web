@@ -1,34 +1,104 @@
 <script>
   /* eslint-env browser */
-  const OBS_WEBSOCKET_LATEST_VERSION = '5.0.1' // https://api.github.com/repos/Palakis/obs-websocket/releases/latest
+  const OBS_WEBSOCKET_LATEST_VERSION = "5.0.1"; // https://api.github.com/repos/Palakis/obs-websocket/releases/latest
 
   // Imports
-  import { onMount } from 'svelte'
-  // State untuk menyimpan daftar koneksi OBS dan koneksi yang dipilih.
+  import { onMount } from "svelte";
   let connections = [
-    { category: 'primary', name: 'WG 100 - Livoli (P)', address: 'ws://192.168.1.6:4444', hidden: true},
-    { category: 'primary', name: 'WG 100 -  Liga 1 Arema vs Persija (P)', address: 'ws://192.168.1.2:4444', hidden: false},
-    { category: 'backup', name: 'WG 100 -  Liga 1 Arema vs Persija (Bakul)', address: 'ws://192.168.1.2:4445', hidden: false},
-    { category: 'backup', name: 'OBS Server 4', address: 'ws://192.168.40.65:4445', hidden: false},
-    { category: 'tv', name: 'OBS Server 5', address: 'ws://192.168.110.65:4444', password: 'mypasswordss' },
-    { category: 'tv-backup', name: 'OBS Server 6', address: 'ws://192.168.110.65:4444', password: 'mypasswordss' },
-    { category: 'tv-backup', name: 'OBS Server 16', address: 'ws://192.168.110.65:4449', password: 'mypasswordss' },
-    { category: 'tv-backup', name: 'OBS Server 26', address: 'ws://192.168.110.65:4445', password: 'mypasswordss' },
-    { category: 'tv-backup', name: 'OBS Server 36', address: 'ws://192.168.110.65:4447', password: 'mypasswordss' },
-    { category: 'tv-backup', name: 'OBS Server 46', address: 'ws://192.168.110.65:4448', password: 'mypasswordss' },
-    { category: 'tv-backup', name: 'OBS Server 646', address: 'ws://192.168.110.65:4441', password: 'mypasswordss' },
-    { category: 'tv-backup', name: 'OBS Server 546', address: 'ws://192.168.110.65:4440', password: 'mypasswordss' },
+    {category: 'primary',   address: 'ws://192.168.40.178:4444',  hidden: false,  name: 'WG 100 - Event 1 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.178:4445',  hidden: false,  name: 'WG 100 - Event 2 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.178:4446',  hidden: false,  name: 'WG 100 - Event 3 (P)'},
+    {category: 'backup',    address: 'ws://192.168.40.177:4444',  hidden: false,  name: 'WG 101 - Event 1 (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.177:4445',  hidden: false,  name: 'WG 101 - Event 2 (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.177:4446',  hidden: false,  name: 'WG 101 - Event 3 (B)'},
+    {category: 'primary',   address: 'ws://192.168.40.33:4444',   hidden: false,  name: 'WG 102 - Event 1 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.33:4445',   hidden: false,  name: 'WG 102 - Event 2 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.33:4446',   hidden: false,  name: 'WG 102 - Event 3 (P)'},
+    {category: 'backup',    address: 'ws://192.168.40.187:4444',  hidden: false,  name: 'WG 103 - Event 1 (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.187:4445',  hidden: false,  name: 'WG 103 - Event 2 (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.187:4446',  hidden: false,  name: 'WG 103 - Event 3 (B)'},
+    {category: 'primary',   address: 'ws://192.168.40.46:4444',   hidden: false,  name: 'WG 104 - Event 1 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.46:4445',   hidden: false,  name: 'WG 104 - Event 2 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.46:4446',   hidden: false,  name: 'WG 104 - Event 3 (P)'},
+    {category: 'backup',    address: 'ws://192.168.40.45:4444',   hidden: false,  name: 'WG 105 - Event 1 (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.45:4445',   hidden: false,  name: 'WG 105 - Event 2 (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.45:4446',   hidden: false,  name: 'WG 105 - Event 3 (B)'},
+    {category: 'primary',   address: 'ws://192.168.40.19:4444',   hidden: false,  name: 'WG 106 - Event 1 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.19:4445',   hidden: false,  name: 'WG 106 - Event 2 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.19:4446',   hidden: false,  name: 'WG 106 - Event 3 (P)'},
+    {category: 'backup',    address: 'ws://192.168.40.186:4444',  hidden: false,  name: 'WG 107 - Event 1 (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.186:4445',  hidden: false,  name: 'WG 107 - Event 2 (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.186:4446',  hidden: false,  name: 'WG 107 - Event 3 (B)'},
+    {category: 'primary',   address: 'ws://192.168.40.49:4444',   hidden: false,  name: 'WG 108 - Event 1 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.49:4445',   hidden: false,  name: 'WG 108 - Event 2 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.49:4446',   hidden: false,  name: 'WG 108 - Event 3 (P)'},
+    {category: 'backup',    address: 'ws://192.168.40.185:4444',  hidden: false,  name: 'WG 109 - Event 1 (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.185:4445',  hidden: false,  name: 'WG 109 - Event 2 (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.185:4446',  hidden: false,  name: 'WG 109 - Event 3 (B)'},
+    {category: 'primary',   address: 'ws://192.168.40.48:4444',   hidden: false,  name: 'WG 110 - Event 1 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.48:4445',   hidden: false,  name: 'WG 110 - Event 2 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.48:4446',   hidden: false,  name: 'WG 110 - Event 3 (P)'},
+    {category: 'backup',    address: 'ws://192.168.40.184:4444',  hidden: false,  name: 'WG 111 - Event 1 (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.184:4445',  hidden: false,  name: 'WG 111 - Event 2 (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.184:4446',  hidden: false,  name: 'WG 111 - Event 3 (B)'},
+    {category: 'primary',   address: 'ws://192.168.40.51:4444',   hidden: false,  name: 'WG 112 - Event 1 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.51:4445',   hidden: false,  name: 'WG 112 - Event 2 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.51:4446',   hidden: false,  name: 'WG 112 - Event 3 (P)'},
+    {category: 'backup',    address: 'ws://192.168.40.55:4444',   hidden: false,  name: 'WG 113 - Event 1 (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.55:4445',   hidden: false,  name: 'WG 113 - Event 2 (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.55:4446',   hidden: false,  name: 'WG 113 - Event 3 (B)'},
+    {category: 'primary',   address: 'ws://192.168.40.18:4444',   hidden: false,  name: 'WG 114 - Event 1 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.18:4445',   hidden: false,  name: 'WG 114 - Event 2 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.18:4446',   hidden: false,  name: 'WG 114 - Event 3 (P)'},
+    {category: 'tv',        address: 'ws://192.168.40.56:4444',   hidden: false,  name: 'WG 01 - SCTV (P)'},
+    {category: 'tv',        address: 'ws://192.168.40.56:4445',   hidden: false,  name: 'WG 01 - IVM (P)'},
+    {category: 'tv',        address: 'ws://192.168.40.56:4446',   hidden: false,  name: 'WG 01 - MOJI (P)'},
+    {category: 'tv-backup', address: 'ws://192.168.40.56:4444',   hidden: false,  name: 'WG 02 - SCTV (B)'},
+    {category: 'tv-backup', address: 'ws://192.168.40.56:4445',   hidden: false,  name: 'WG 02 - IVM (B)'},
+    {category: 'tv-backup', address: 'ws://192.168.40.56:4446',   hidden: false,  name: 'WG 02 - MOJI (B)'},
+    {category: 'tv',        address: 'ws://192.168.40.14:4444',   hidden: false,  name: 'WG 03 - CTV 1 (P)'},
+    {category: 'tv',        address: 'ws://192.168.40.14:4445',   hidden: false,  name: 'WG 03 - CTV 2 (P)'},
+    {category: 'tv-backup', address: 'ws://192.168.40.188:4444',  hidden: false,  name: 'WG 04 - CTV 1 (B)'},
+    {category: 'tv-backup', address: 'ws://192.168.40.188:4445',  hidden: false,  name: 'WG 04 - CTV 2 (B)'},
+    {category: 'tv',        address: 'ws://192.168.40.181:4444',  hidden: false,  name: 'WG 18 - CTV 1 Serie A (P)'},
+    {category: 'tv',        address: 'ws://192.168.40.181:4445',  hidden: false,  name: 'WG 18 - CTV 2 Serie A (P)'},
+    {category: 'tv-backup', address: 'ws://192.168.40.179:4444',  hidden: false,  name: 'WG 12 - CTV 1 Serie A (B)'},
+    {category: 'tv-backup', address: 'ws://192.168.40.179:4445',  hidden: false,  name: 'WG 12 - CTV 2 Serie A (B)'},
+    {category: 'tv',        address: 'ws://192.168.40.13:4445',   hidden: false,  name: 'WG 05 - PLTV (P)'},
+    {category: 'tv-backup', address: 'ws://192.168.40.194:4445',  hidden: false,  name: 'WG 06 - PLTV (B)'},
+    {category: 'tv',        address: 'ws://192.168.40.12:4446',   hidden: false,  name: 'WG 07 - Trans 7 (P)'},
+    {category: 'tv-backup', address: 'ws://192.168.40.137:4446',  hidden: false,  name: 'WG 08 - Trans 7 (B)'},
+    {category: 'tv',        address: 'ws://192.168.40.11:4445',   hidden: false,  name: 'WG 09 - TVN (P)'},
+    {category: 'tv-backup', address: 'ws://192.168.40.192:4445',  hidden: false,  name: 'WG 10 - TVN (B)'},
+    {category: 'tv',        address: 'ws://192.168.40.40:4444',   hidden: false,  name: 'WG 26 - CTV 5 (P)'},
+    {category: 'tv',        address: 'ws://192.168.40.40:4445',   hidden: false,  name: 'WG 26 - CTV 6 (P)'},
+    {category: 'tv-backup', address: 'ws://192.168.40.190:4444',  hidden: false,  name: 'WG 27 - CTV 5 (B)'},
+    {category: 'tv-backup', address: 'ws://192.168.40.190:4445',  hidden: false,  name: 'WG 27 - CTV 6 (B)'},
+    {category: 'tv',        address: 'ws://192.168.40.67:4444',   hidden: false,  name: 'WG 28 - SPOTV 1 (P)'},
+    {category: 'tv',        address: 'ws://192.168.40.67:4445',   hidden: false,  name: 'WG 28 - SPOTV 2 (P)'},
+    {category: 'tv-backup', address: 'ws://192.168.40.189:4444',  hidden: false,  name: 'WG 29 - SPOTV 1 (P)'},
+    {category: 'tv-backup', address: 'ws://192.168.40.189:4445',  hidden: false,  name: 'WG 29 - SPOTV 2 (P)'},
+    {category: 'tv',        address: 'ws://192.168.40.43:4444',   hidden: false,  name: 'WG 30 - beIN 1 (P)'},
+    {category: 'tv',        address: 'ws://192.168.40.43:4445',   hidden: false,  name: 'WG 30 - beIN 2 (P)'},
+    {category: 'tv',        address: 'ws://192.168.40.43:4446',   hidden: false,  name: 'WG 30 - F1 Event (B)'},
+    {category: 'tv-backup', address: 'ws://192.168.40.78:4444',   hidden: false,  name: 'WG 31 - beIN 1 (B)'},
+    {category: 'tv-backup', address: 'ws://192.168.40.78:4445',   hidden: false,  name: 'WG 31 - beIN 2 (B)'},
+    {category: 'tv-backup', address: 'ws://192.168.40.78:4446',   hidden: false,  name: 'WG 31 - F1 Event (B)'},
+    {category: 'tv',        address: 'ws://192.168.40.36:4445',   hidden: false,  name: 'WG 19 - Mentari TV (P)'},
+    {category: 'tv',        address: 'ws://192.168.40.10:4444',   hidden: false,  name: 'WG 20 - NET TV (P)'},
+    {category: 'tv',        address: 'ws://192.168.40.35:4445',   hidden: false,  name: 'WG 22 - RTV (P)'},
+    {category: 'tv',        address: 'ws://192.168.40.65:4444',   hidden: false,  name: 'WG 23 - ANTV (P)'},
+    {category: 'tv',        address: 'ws://192.168.40.65:4445',   hidden: false,  name: 'WG 23 - TV One (P)'},
   ];
-  
   // GET ITEM FROM LOCAL STORAGE
-// let selectedConnection = connections[localStorage.getItem('selectedConnection') || 0];
-// let selectedConnectionB = connections[localStorage.getItem('selectedConnection') || 1];
+  // let selectedConnection = connections[localStorage.getItem('selectedConnection') || 0];
+  // let selectedConnectionB = connections[localStorage.getItem('selectedConnection') || 1];
 
   let selectedConnection = connections[0]; // Default connection
   let selectedConnectionB = connections[1];
 
-  let connectionStatus = 'Disconnected';
-  let connectionStatusB = 'Disconnected';
+  let connectionStatus = "Disconnected";
+  let connectionStatusB = "Disconnected";
 
   let { address, password } = selectedConnection;
 
@@ -51,563 +121,578 @@
     mdiCameraOff,
     mdiCamera,
     mdiMotionPlayOutline,
-    mdiMotionPlay
-  } from '@mdi/js'
-  import Icon from 'mdi-svelte'
-  import { compareVersions } from 'compare-versions'
+    mdiMotionPlay,
+  } from "@mdi/js";
+  import Icon from "mdi-svelte";
+  import { compareVersions } from "compare-versions";
 
-  import './style.scss'
-  import { obs, sendCommand, obsB, sendCommandB } from './obs.js'
-  import ProgramPreview from './ProgramPreview.svelte'
-  import ProgramPreviewMulti from './ProgramPreviewMulti.svelte'
-  import SceneSwitcher from './SceneSwitcher.svelte'
-  import SourceSwitcher from './SourceSwitcher.svelte'
-  import ProfileSelect from './ProfileSelect.svelte'
-  import SceneCollectionSelect from './SceneCollectionSelect.svelte'
-  import ProgramPreviewB from './ProgramPreviewB.svelte'
-  import SceneSwitcherB from './SceneSwitcherB.svelte'
-  import SourceSwitcherB from './SourceSwitcherB.svelte'
-  import ProfileSelectB from './ProfileSelectB.svelte'
-  import SceneCollectionSelectB from './SceneCollectionSelectB.svelte'
+  import "./style.scss";
+  import { obs, sendCommand, obsB, sendCommandB } from "./obs.js";
+  import ProgramPreview from "./ProgramPreview.svelte";
+  import ProgramPreviewMulti from "./ProgramPreviewMulti.svelte";
+  import SceneSwitcher from "./SceneSwitcher.svelte";
+  import SourceSwitcher from "./SourceSwitcher.svelte";
+  import ProfileSelect from "./ProfileSelect.svelte";
+  import SceneCollectionSelect from "./SceneCollectionSelect.svelte";
+  import ProgramPreviewB from "./ProgramPreviewB.svelte";
+  import SceneSwitcherB from "./SceneSwitcherB.svelte";
+  import SourceSwitcherB from "./SourceSwitcherB.svelte";
+  import ProfileSelectB from "./ProfileSelectB.svelte";
+  import SceneCollectionSelectB from "./SceneCollectionSelectB.svelte";
 
   onMount(async () => {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/service-worker.js')
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/service-worker.js");
     }
 
     // Request screen wakelock
-    if ('wakeLock' in navigator) {
+    if ("wakeLock" in navigator) {
       try {
-        await navigator.wakeLock.request('screen')
+        await navigator.wakeLock.request("screen");
         // Re-request when coming back
-        document.addEventListener('visibilitychange', async () => {
-          if (document.visibilityState === 'visible') {
-            await navigator.wakeLock.request('screen')
+        document.addEventListener("visibilitychange", async () => {
+          if (document.visibilityState === "visible") {
+            await navigator.wakeLock.request("screen");
           }
-        })
+        });
       } catch (e) {}
     }
 
     // Toggle the navigation hamburger menu on mobile
-    const navbar = document.querySelector('.navbar-burger')
-    navbar.addEventListener('click', () => {
-      navbar.classList.toggle('is-active')
+    const navbar = document.querySelector(".navbar-burger");
+    navbar.addEventListener("click", () => {
+      navbar.classList.toggle("is-active");
       document
         .getElementById(navbar.dataset.target)
-        .classList.toggle('is-active')
-    })
+        .classList.toggle("is-active");
+    });
 
     // Listen for fullscreen changes
-    document.addEventListener('fullscreenchange', () => {
-      isFullScreen = document.fullscreenElement
-    })
+    document.addEventListener("fullscreenchange", () => {
+      isFullScreen = document.fullscreenElement;
+    });
 
-    document.addEventListener('webkitfullscreenchange', () => {
-      isFullScreen = document.webkitFullscreenElement
-    })
+    document.addEventListener("webkitfullscreenchange", () => {
+      isFullScreen = document.webkitFullscreenElement;
+    });
 
-    document.addEventListener('msfullscreenchange', () => {
-      isFullScreen = document.msFullscreenElement
-    })
+    document.addEventListener("msfullscreenchange", () => {
+      isFullScreen = document.msFullscreenElement;
+    });
 
-    if (document.location.hash !== '') {
+    if (document.location.hash !== "") {
       // Read address from hash
-      address = document.location.hash.slice(1)
+      address = document.location.hash.slice(1);
 
       // This allows you to add a password in the URL like this:
       // http://obs-web.niek.tv/#ws://localhost:4455#password
-      if (address.includes('#')) {
-        [address, password] = address.split('#')
+      if (address.includes("#")) {
+        [address, password] = address.split("#");
       }
-      await connect()
+      await connect();
     }
 
     // Export the sendCommand() function to the window objects
-    window.sendCommand = sendCommand
-  })
+    window.sendCommand = sendCommand;
+  });
 
   onMount(async () => {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/service-worker.js')
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/service-worker.js");
     }
 
     // Request screen wakelock
-    if ('wakeLock' in navigator) {
+    if ("wakeLock" in navigator) {
       try {
-        await navigator.wakeLock.request('screen')
+        await navigator.wakeLock.request("screen");
         // Re-request when coming back
-        document.addEventListener('visibilitychange', async () => {
-          if (document.visibilityState === 'visible') {
-            await navigator.wakeLock.request('screen')
+        document.addEventListener("visibilitychange", async () => {
+          if (document.visibilityState === "visible") {
+            await navigator.wakeLock.request("screen");
           }
-        })
+        });
       } catch (e) {}
     }
 
     // Toggle the navigation hamburger menu on mobile
-    const navbar = document.querySelector('.navbar-burger')
-    navbar.addEventListener('click', () => {
-      navbar.classList.toggle('is-active')
+    const navbar = document.querySelector(".navbar-burger");
+    navbar.addEventListener("click", () => {
+      navbar.classList.toggle("is-active");
       document
         .getElementById(navbar.dataset.target)
-        .classList.toggle('is-active')
-    })
+        .classList.toggle("is-active");
+    });
 
     // Listen for fullscreen changes
-    document.addEventListener('fullscreenchange', () => {
-      isFullScreenB = document.fullscreenElement
-    })
+    document.addEventListener("fullscreenchange", () => {
+      isFullScreenB = document.fullscreenElement;
+    });
 
-    document.addEventListener('webkitfullscreenchange', () => {
-      isFullScreenB = document.webkitFullscreenElement
-    })
+    document.addEventListener("webkitfullscreenchange", () => {
+      isFullScreenB = document.webkitFullscreenElement;
+    });
 
-    document.addEventListener('msfullscreenchange', () => {
-      isFullScreenB = document.msFullscreenElement
-    })
+    document.addEventListener("msfullscreenchange", () => {
+      isFullScreenB = document.msFullscreenElement;
+    });
 
-    if (document.location.hash !== '') {
+    if (document.location.hash !== "") {
       // Read address from hash
-      address = document.location.hash.slice(1)
+      address = document.location.hash.slice(1);
 
       // This allows you to add a password in the URL like this:
       // http://obs-web.niek.tv/#ws://localhost:4455#password
-      if (address.includes('#')) {
-        [address, password] = address.split('#')
+      if (address.includes("#")) {
+        [address, password] = address.split("#");
       }
-      await connectB()
+      await connectB();
     }
 
     // Export the sendCommand() function to the window objects
-    window.sendCommand = sendCommandB
-  })
-
-  
+    window.sendCommand = sendCommandB;
+  });
 
   // State
-  let connected
-  let heartbeat = {}
-  let heartbeatInterval
-  let isFullScreen
-  let isStudioMode
-  let isSceneOnTop = window.localStorage.getItem('isSceneOnTop') || false
-  let isVirtualCamActive
-  let isIconMode = window.localStorage.getItem('isIconMode') || false
-  let isReplaying
-  let editable = false
-  let scenes = []
-  let replayError = ''
-  let errorMessage = ''
-  let imageFormat = 'jpg'
+  let connected;
+  let heartbeat = {};
+  let heartbeatInterval;
+  let isFullScreen;
+  let isStudioMode;
+  let isSceneOnTop = window.localStorage.getItem("isSceneOnTop") || false;
+  let isVirtualCamActive;
+  let isIconMode = window.localStorage.getItem("isIconMode") || false;
+  let isReplaying;
+  let editable = false;
+  let scenes = [];
+  let replayError = "";
+  let errorMessage = "";
+  let imageFormat = "jpg";
 
-  let connectedB
-  let heartbeatB = {}
-  let heartbeatIntervalB
-  let isFullScreenB
-  let isStudioModeB
-  let isSceneOnTopB = window.localStorage.getItem('isSceneOnTop') || false
-  let isVirtualCamActiveB
-  let isIconModeB = window.localStorage.getItem('isIconMode') || false
-  let isReplayingB
-  let editableB = false
-  let scenesB = []
-  let replayErrorB = ''
-  let errorMessageB = ''
-  let imageFormatB = 'jpg'
+  // State B
+  let connectedB;
+  let heartbeatB = {};
+  let heartbeatIntervalB;
+  let isFullScreenB;
+  let isStudioModeB;
+  let isSceneOnTopB = window.localStorage.getItem("isSceneOnTop") || false;
+  let isVirtualCamActiveB;
+  let isIconModeB = window.localStorage.getItem("isIconMode") || false;
+  let isReplayingB;
+  let editableB = false;
+  let scenesB = [];
+  let replayErrorB = "";
+  let errorMessageB = "";
+  let imageFormatB = "jpg";
 
   $: isSceneOnTop
-    ? window.localStorage.setItem('isSceneOnTop', 'true')
-    : window.localStorage.removeItem('isSceneOnTop')
+    ? window.localStorage.setItem("isSceneOnTop", "true")
+    : window.localStorage.removeItem("isSceneOnTop");
 
   $: isIconMode
-    ? window.localStorage.setItem('isIconMode', 'true')
-    : window.localStorage.removeItem('isIconMode')
-  
+    ? window.localStorage.setItem("isIconMode", "true")
+    : window.localStorage.removeItem("isIconMode");
+
   $: isSceneOnTopB
-    ? window.localStorage.setItem('isSceneOnTop', 'true')
-    : window.localStorage.removeItem('isSceneOnTop')
+    ? window.localStorage.setItem("isSceneOnTop", "true")
+    : window.localStorage.removeItem("isSceneOnTop");
 
   $: isIconModeB
-    ? window.localStorage.setItem('isIconMode', 'true')
-    : window.localStorage.removeItem('isIconMode')
+    ? window.localStorage.setItem("isIconMode", "true")
+    : window.localStorage.removeItem("isIconMode");
 
-  function formatTime (secs) {
-    secs = Math.round(secs / 1000)
-    const hours = Math.floor(secs / 3600)
-    secs -= hours * 3600
-    const mins = Math.floor(secs / 60)
-    secs -= mins * 60
+  function formatTime(secs) {
+    secs = Math.round(secs / 1000);
+    const hours = Math.floor(secs / 3600);
+    secs -= hours * 3600;
+    const mins = Math.floor(secs / 60);
+    secs -= mins * 60;
     return hours > 0
-      ? `${hours}:${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`
-      : `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`
+      ? `${hours}:${mins < 10 ? "0" : ""}${mins}:${secs < 10 ? "0" : ""}${secs}`
+      : `${mins < 10 ? "0" : ""}${mins}:${secs < 10 ? "0" : ""}${secs}`;
   }
 
-  function toggleFullScreen () {
+  function toggleFullScreen() {
     if (isFullScreen) {
       if (document.exitFullscreen) {
-        document.exitFullscreen()
+        document.exitFullscreen();
       } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen()
+        document.webkitExitFullscreen();
       } else if (document.msExitFullscreen) {
-        document.msExitFullscreen()
+        document.msExitFullscreen();
       }
     } else {
       if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen()
+        document.documentElement.requestFullscreen();
       } else if (document.documentElement.webkitRequestFullscreen) {
-        document.documentElement.webkitRequestFullscreen()
+        document.documentElement.webkitRequestFullscreen();
       } else if (document.documentElement.msRequestFullscreen) {
-        document.documentElement.msRequestFullscreen()
+        document.documentElement.msRequestFullscreen();
       }
     }
   }
-  function toggleFullScreenB () {
+  function toggleFullScreenB() {
     if (isFullScreenB) {
       if (document.exitFullscreen) {
-        document.exitFullscreen()
+        document.exitFullscreen();
       } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen()
+        document.webkitExitFullscreen();
       } else if (document.msExitFullscreen) {
-        document.msExitFullscreen()
+        document.msExitFullscreen();
       }
     } else {
       if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen()
+        document.documentElement.requestFullscreen();
       } else if (document.documentElement.webkitRequestFullscreen) {
-        document.documentElement.webkitRequestFullscreen()
+        document.documentElement.webkitRequestFullscreen();
       } else if (document.documentElement.msRequestFullscreen) {
-        document.documentElement.msRequestFullscreen()
+        document.documentElement.msRequestFullscreen();
       }
     }
   }
 
-  async function toggleStudioMode () {
-    await sendCommand('SetStudioModeEnabled', {
-      studioModeEnabled: !isStudioMode
-    })
+  async function toggleStudioMode() {
+    await sendCommand("SetStudioModeEnabled", {
+      studioModeEnabled: !isStudioMode,
+    });
   }
-  async function toggleStudioModeB () {
-    await sendCommandB('SetStudioModeEnabled', {
-      studioModeEnabled: !isStudioModeB
-    })
+  async function toggleStudioModeB() {
+    await sendCommandB("SetStudioModeEnabled", {
+      studioModeEnabled: !isStudioModeB,
+    });
   }
 
-  async function toggleReplay () {
-    const data = await sendCommand('ToggleReplayBuffer')
-    console.debug('ToggleReplayBuffer', data.outputActive)
+  async function toggleReplay() {
+    const data = await sendCommand("ToggleReplayBuffer");
+    console.debug("ToggleReplayBuffer", data.outputActive);
     if (data.outputActive === undefined) {
-      replayError = 'Replay buffer is not enabled.'
+      replayError = "Replay buffer is not enabled.";
       setTimeout(function () {
-        replayError = ''
-      }, 5000)
-    } else isReplaying = data.outputActive
+        replayError = "";
+      }, 5000);
+    } else isReplaying = data.outputActive;
   }
-  async function toggleReplayB () {
-    const data = await sendCommandB('ToggleReplayBuffer')
-    console.debug('ToggleReplayBuffer', data.outputActive)
+  async function toggleReplayB() {
+    const data = await sendCommandB("ToggleReplayBuffer");
+    console.debug("ToggleReplayBuffer", data.outputActive);
     if (data.outputActive === undefined) {
-      replayError = 'Replay buffer is not enabled.'
+      replayError = "Replay buffer is not enabled.";
       setTimeout(function () {
-        replayError = ''
-      }, 5000)
-    } else isReplayingB = data.outputActive
+        replayError = "";
+      }, 5000);
+    } else isReplayingB = data.outputActive;
   }
 
-  async function switchSceneView () {
-    isSceneOnTop = !isSceneOnTop
+  async function switchSceneView() {
+    isSceneOnTop = !isSceneOnTop;
   }
-  async function switchSceneViewB () {
-    isSceneOnTopB = !isSceneOnTopB
-  }
-
-  async function startStream () {
-    await sendCommand('StartStream')
-  }
-  async function startStreamB () {
-    await sendCommandB('StartStream')
+  async function switchSceneViewB() {
+    isSceneOnTopB = !isSceneOnTopB;
   }
 
-  async function stopStream () {
-    await sendCommand('StopStream')
+  async function startStream() {
+    await sendCommand("StartStream");
   }
-  async function stopStreamB () {
-    await sendCommandB('StopStream')
-  }
-
-  async function startRecording () {
-    await sendCommand('StartRecord')
-  }
-  async function startRecordingB () {
-    await sendCommandB('StartRecord')
+  async function startStreamB() {
+    await sendCommandB("StartStream");
   }
 
-  async function stopRecording () {
-    await sendCommand('StopRecord')
+  async function stopStream() {
+    await sendCommand("StopStream");
   }
-  async function stopRecordingB () {
-    await sendCommandB('StopRecord')
-  }
-
-  async function startVirtualCam () {
-    await sendCommand('StartVirtualCam')
-  }
-  async function startVirtualCamB () {
-    await sendCommandB('StartVirtualCam')
+  async function stopStreamB() {
+    await sendCommandB("StopStream");
   }
 
-  async function stopVirtualCam () {
-    await sendCommand('StopVirtualCam')
+  async function startRecording() {
+    await sendCommand("StartRecord");
   }
-  async function stopVirtualCamB () {
-    await sendCommandB('StopVirtualCam')
-  }
-
-  async function pauseRecording () {
-    await sendCommand('PauseRecord')
-  }
-  async function pauseRecordingB () {
-    await sendCommandB('PauseRecord')
+  async function startRecordingB() {
+    await sendCommandB("StartRecord");
   }
 
-  async function resumeRecording () {
-    await sendCommand('ResumeRecord')
+  async function stopRecording() {
+    await sendCommand("StopRecord");
   }
-  async function resumeRecordingB () {
-    await sendCommandB('ResumeRecord')
+  async function stopRecordingB() {
+    await sendCommandB("StopRecord");
   }
 
-  // Fungsi koneksi
-async function connect() {
-    address = address || 'ws://localhost:4455';
-    if (address.indexOf('://') === -1) {
-        const secure = location.protocol === 'https:' || address.endsWith(':443');
-        address = (secure ? 'wss://' : 'ws://') + address;
+  async function startVirtualCam() {
+    await sendCommand("StartVirtualCam");
+  }
+  async function startVirtualCamB() {
+    await sendCommandB("StartVirtualCam");
+  }
+
+  async function stopVirtualCam() {
+    await sendCommand("StopVirtualCam");
+  }
+  async function stopVirtualCamB() {
+    await sendCommandB("StopVirtualCam");
+  }
+
+  async function pauseRecording() {
+    await sendCommand("PauseRecord");
+  }
+  async function pauseRecordingB() {
+    await sendCommandB("PauseRecord");
+  }
+
+  async function resumeRecording() {
+    await sendCommand("ResumeRecord");
+  }
+  async function resumeRecordingB() {
+    await sendCommandB("ResumeRecord");
+  }
+
+  async function checkObsVersion() {
+  const { version } = await sendCommand('GetVersion'); 
+  if (version >= 30) {
+    imageFormat = 'png';
+  } else {
+    imageFormat = 'jpg';
+  }
+}
+
+  async function connect() {
+    address = address || "ws://localhost:4455";
+    if (address.indexOf("://") === -1) {
+      const secure = location.protocol === "https:" || address.endsWith(":443");
+      address = (secure ? "wss://" : "ws://") + address;
     }
 
-    console.log('Connecting to:', address, '- using password:', password);
+    console.log("Connecting to:", address, "- using password:", password);
+    await checkObsVersion();
     await disconnect();
 
     try {
-        const { obsWebSocketVersion, negotiatedRpcVersion } = await obs.connect(address, password);
-        console.log(`Connected to obs-websocket version ${obsWebSocketVersion} (using RPC ${negotiatedRpcVersion})`);
-        connectionStatus = `Connected`;
+      const { obsWebSocketVersion, negotiatedRpcVersion } = await obs.connect(
+        address,
+        password,
+      );
+      console.log(
+        `Connected to obs-websocket version ${obsWebSocketVersion} (using RPC ${negotiatedRpcVersion})`,
+      );
+      connectionStatus = `Connected`;
     } catch (e) {
-        console.log(e);
-        errorMessage = e.message;
-        connectionStatus = 'Error connecting to OBS: ' + errorMessage;
+      console.log(e);
+      errorMessage = e.message;
+      connectionStatus = "Error connecting to OBS: " + errorMessage;
     }
-}
+  }
 
-async function connectB() {
-    address = address || 'ws://localhost:4455';
-    if (address.indexOf('://') === -1) {
-        const secure = location.protocol === 'https:' || address.endsWith(':443');
-        address = (secure ? 'wss://' : 'ws://') + address;
+  async function connectB() {
+    address = address || "ws://localhost:4455";
+    if (address.indexOf("://") === -1) {
+      const secure = location.protocol === "https:" || address.endsWith(":443");
+      address = (secure ? "wss://" : "ws://") + address;
     }
 
-    console.log('Connecting to:', address, '- using password:', password);
+    console.log("Connecting to:", address, "- using password:", password);
+    await checkObsVersion();
     await disconnectB();
 
     try {
-        const { obsWebSocketVersion, negotiatedRpcVersion } = await obsB.connect(address, password);
-        console.log(`Connected to obs-websocket version ${obsWebSocketVersion} (using RPC ${negotiatedRpcVersion})`);
-        connectionStatusB = `Connected`;
+      const { obsWebSocketVersion, negotiatedRpcVersion } = await obsB.connect(
+        address,
+        password,
+      );
+      console.log(
+        `Connected to obs-websocket version ${obsWebSocketVersion} (using RPC ${negotiatedRpcVersion})`,
+      );
+      connectionStatusB = `Connected`;
     } catch (e) {
-        console.log(e);
-        errorMessageB = e.message;
-        connectionStatusB = 'Error connecting to OBS B: ' + errorMessageB;
+      console.log(e);
+      errorMessageB = e.message;
+      connectionStatusB = "Error connecting to OBS B: " + errorMessageB;
     }
-}
+  }
 
-async function switchConnection(connection) {
+  async function switchConnection(connection) {
     selectedConnection = connection;
-    ({ address, password } = connection); // Update address dan password dari connection
-    connectionStatus = 'Connecting...'; // Status sementara
+    ({ address, password } = connection); 
+    connectionStatus = "Connecting...";
     await connect();
   }
-  // Fungsi untuk beralih koneksi saat dropdown dipilih
   async function switchConnectionB(connection) {
     selectedConnectionB = connection;
-    ({ address, password } = connection); // Update address dan password dari connection
-    connectionStatusB = 'Connecting...'; // Status sementara
+    ({ address, password } = connection); 
+    connectionStatusB = "Connecting...";
     await connectB();
   }
-  
-//   // GET ITEM FROM LOCAL STORAGE
-// async function switchConnection(connection) {
-//     selectedConnection = connection;
-//     ({ address, password } = connection);
-//     localStorage.setItem('selectedConnection', connections.indexOf(connection)); // Simpan ke localStorage
-//     connectionStatus = 'Connecting...';
-//     await connect();
-// }
 
-// async function switchConnectionB(connection) {
-//     selectedConnectionB = connection;
-//     ({ address, password } = connection);
-//     localStorage.setItem('selectedConnectionB', connections.indexOf(connection)); // Simpan ke localStorage
-//     connectionStatusB = 'Connecting...';
-//     await connectB();
-// }
+  //   // GET ITEM FROM LOCAL STORAGE
+  // async function switchConnection(connection) {
+  //     selectedConnection = connection;
+  //     ({ address, password } = connection);
+  //     localStorage.setItem('selectedConnection', connections.indexOf(connection));
+  //     connectionStatus = 'Connecting...';
+  //     await connect();
+  // }
 
+  // async function switchConnectionB(connection) {
+  //     selectedConnectionB = connection;
+  //     ({ address, password } = connection);
+  //     localStorage.setItem('selectedConnectionB', connections.indexOf(connection));
+  //     connectionStatusB = 'Connecting...';
+  //     await connectB();
+  // }
 
-  // Fungsi untuk memutuskan koneksi
   async function disconnect() {
     if (obs) {
-      await obs.disconnect(); // Pastikan untuk memanggil disconnect dari objek obs
-      clearInterval(heartbeatInterval)
-      connectionStatus = 'Disconnected From Last Session';
-      console.log('Disconnected from OBS A.');
+      await obs.disconnect();
+      clearInterval(heartbeatInterval);
+      connectionStatus = "Disconnected From Last Session";
+      console.log("Disconnected from OBS A.");
     }
   }
   async function disconnectB() {
     if (obsB) {
-      await obsB.disconnect(); // Pastikan untuk memanggil disconnect dari objek obs
-      clearInterval(heartbeatIntervalB)
-      connectionStatusB = 'Disconnected From Last Session';
-      console.log('Disconnected from OBS.');
+      await obsB.disconnect();
+      clearInterval(heartbeatIntervalB);
+      connectionStatusB = "Disconnected From Last Session";
+      console.log("Disconnected from OBS.");
     }
   }
 
   // OBS events
-  obs.on('ConnectionClosed', () => {
-    connected = false
+  obs.on("ConnectionClosed", () => {
+    connected = false;
     window.history.pushState(
-      '',
+      "",
       document.title,
-      window.location.pathname + window.location.search
-    ) // Remove the hash
-    console.log('Connection closed')
-  })
+      window.location.pathname + window.location.search,
+    ); // Remove the hash
+    console.log("Connection closed");
+  });
   // OBS events
-  obsB.on('ConnectionClosed', () => {
-    connectedB = false
+  obsB.on("ConnectionClosed", () => {
+    connectedB = false;
     window.history.pushState(
-      '',
+      "",
       document.title,
-      window.location.pathname + window.location.search
-    ) // Remove the hash
-    console.log('Connection closed')
-  })
+      window.location.pathname + window.location.search,
+    ); // Remove the hash
+    console.log("Connection closed");
+  });
 
-  obs.on('Identified', async () => {
-    console.log('Connected')
-    connected = true
-    document.location.hash = address // For easy bookmarking
-    const data = await sendCommand('GetVersion')
-    const version = data.obsWebSocketVersion || ''
-    console.log('OBS-websocket version:', version)
+  obs.on("Identified", async () => {
+    console.log("Connected");
+    connected = true;
+    document.location.hash = address; // For easy bookmarking
+    const data = await sendCommand("GetVersion");
+    const version = data.obsWebSocketVersion || "";
+    console.log("OBS-websocket version:", version);
     if (compareVersions(version, OBS_WEBSOCKET_LATEST_VERSION) < 0) {
       alert(
-        'You are running an outdated OBS-websocket (version ' +
+        "You are running an outdated OBS-websocket (version " +
           version +
-          '), please upgrade to the latest version for full compatibility.'
-      )
+          "), please upgrade to the latest version for full compatibility.",
+      );
     }
     if (
-      data.supportedImageFormats.includes('webp') &&
+      data.supportedImageFormats.includes("webp") &&
       document
-        .createElement('canvas')
-        .toDataURL('image/webp')
-        .indexOf('data:image/webp') === 0
+        .createElement("canvas")
+        .toDataURL("image/webp")
+        .indexOf("data:image/webp") === 0
     ) {
-      imageFormat = 'webp'
+      imageFormat = "webp";
     }
     heartbeatInterval = setInterval(async () => {
-      const stats = await sendCommand('GetStats')
-      const streaming = await sendCommand('GetStreamStatus')
-      const recording = await sendCommand('GetRecordStatus')
-      heartbeat = { stats, streaming, recording }
+      const stats = await sendCommand("GetStats");
+      const streaming = await sendCommand("GetStreamStatus");
+      const recording = await sendCommand("GetRecordStatus");
+      heartbeat = { stats, streaming, recording };
       // console.log(heartbeat);
-    }, 1000) // Heartbeat
+    }, 1000); // Heartbeat
     isStudioMode =
-      (await sendCommand('GetStudioModeEnabled')).studioModeEnabled || false
+      (await sendCommand("GetStudioModeEnabled")).studioModeEnabled || false;
     isVirtualCamActive =
-      (await sendCommand('GetVirtualCamStatus')).outputActive || false
-  })
+      (await sendCommand("GetVirtualCamStatus")).outputActive || false;
+  });
 
-  obsB.on('Identified', async () => {
-    console.log('Connected')
-    connectedB = true
-    document.location.hash = address // For easy bookmarking
-    const data = await sendCommandB('GetVersion')
-    const version = data.obsWebSocketVersion || ''
-    console.log('OBS-websocket version:', version)
+  obsB.on("Identified", async () => {
+    console.log("Connected");
+    connectedB = true;
+    document.location.hash = address; // For easy bookmarking
+    const data = await sendCommandB("GetVersion");
+    const version = data.obsWebSocketVersion || "";
+    console.log("OBS-websocket version:", version);
     if (compareVersions(version, OBS_WEBSOCKET_LATEST_VERSION) < 0) {
       alert(
-        'You are running an outdated OBS-websocket (version ' +
+        "You are running an outdated OBS-websocket (version " +
           version +
-          '), please upgrade to the latest version for full compatibility.'
-      )
+          "), please upgrade to the latest version for full compatibility.",
+      );
     }
     if (
-      data.supportedImageFormats.includes('webp') &&
+      data.supportedImageFormats.includes("webp") &&
       document
-        .createElement('canvas')
-        .toDataURL('image/webp')
-        .indexOf('data:image/webp') === 0
+        .createElement("canvas")
+        .toDataURL("image/webp")
+        .indexOf("data:image/webp") === 0
     ) {
-      imageFormat = 'webp'
+      imageFormat = "webp";
     }
     heartbeatIntervalB = setInterval(async () => {
-      const stats = await sendCommandB('GetStats')
-      const streaming = await sendCommandB('GetStreamStatus')
-      const recording = await sendCommandB('GetRecordStatus')
-      heartbeatB = { stats, streaming, recording }
+      const stats = await sendCommandB("GetStats");
+      const streaming = await sendCommandB("GetStreamStatus");
+      const recording = await sendCommandB("GetRecordStatus");
+      heartbeatB = { stats, streaming, recording };
       // console.log(heartbeat);
-    }, 1000) // Heartbeat
+    }, 1000); // Heartbeat
     isStudioModeB =
-      (await sendCommandB('GetStudioModeEnabled')).studioModeEnabled || false
+      (await sendCommandB("GetStudioModeEnabled")).studioModeEnabled || false;
     isVirtualCamActiveB =
-      (await sendCommandB('GetVirtualCamStatus')).outputActive || false
-  })
+      (await sendCommandB("GetVirtualCamStatus")).outputActive || false;
+  });
 
-  obs.on('ConnectionError', async () => {
-    errorMessage = 'Please enter your password:'
-    document.getElementById('password').focus()
+  obs.on("ConnectionError", async () => {
+    errorMessage = "Please enter your password:";
+    document.getElementById("password").focus();
     if (!password) {
-      connected = false
+      connected = false;
     } else {
-      await connect()
+      await connect();
     }
-  })
-  obsB.on('ConnectionError', async () => {
-    errorMessageB = 'Please enter your password:'
-    document.getElementById('password').focus()
+  });
+  obsB.on("ConnectionError", async () => {
+    errorMessageB = "Please enter your password:";
+    document.getElementById("password").focus();
     if (!password) {
-      connectedB = false
+      connectedB = false;
     } else {
-      await connectB()
+      await connectB();
     }
-  })
+  });
 
-  obs.on('VirtualcamStateChanged', async (data) => {
-    console.log('VirtualcamStateChanged', data.outputActive)
-    isVirtualCamActive = data && data.outputActive
-  })
-  obsB.on('VirtualcamStateChanged', async (data) => {
-    console.log('VirtualcamStateChanged', data.outputActive)
-    isVirtualCamActiveB = data && data.outputActive
-  })
+  obs.on("VirtualcamStateChanged", async (data) => {
+    console.log("VirtualcamStateChanged", data.outputActive);
+    isVirtualCamActive = data && data.outputActive;
+  });
+  obsB.on("VirtualcamStateChanged", async (data) => {
+    console.log("VirtualcamStateChanged", data.outputActive);
+    isVirtualCamActiveB = data && data.outputActive;
+  });
 
-  obs.on('StudioModeStateChanged', async (data) => {
-    console.log('StudioModeStateChanged', data.studioModeEnabled)
-    isStudioMode = data && data.studioModeEnabled
-  })
-  obsB.on('StudioModeStateChanged', async (data) => {
-    console.log('StudioModeStateChanged', data.studioModeEnabled)
-    isStudioModeB = data && data.studioModeEnabled
-  })
+  obs.on("StudioModeStateChanged", async (data) => {
+    console.log("StudioModeStateChanged", data.studioModeEnabled);
+    isStudioMode = data && data.studioModeEnabled;
+  });
+  obsB.on("StudioModeStateChanged", async (data) => {
+    console.log("StudioModeStateChanged", data.studioModeEnabled);
+    isStudioModeB = data && data.studioModeEnabled;
+  });
 
-  obs.on('ReplayBufferStateChanged', async (data) => {
-    console.log('ReplayBufferStateChanged', data)
-    isReplaying = data && data.outputActive
-  })
-  obsB.on('ReplayBufferStateChanged', async (data) => {
-    console.log('ReplayBufferStateChanged', data)
-    isReplayingB = data && data.outputActive
-  })
-  
+  obs.on("ReplayBufferStateChanged", async (data) => {
+    console.log("ReplayBufferStateChanged", data);
+    isReplaying = data && data.outputActive;
+  });
+  obsB.on("ReplayBufferStateChanged", async (data) => {
+    console.log("ReplayBufferStateChanged", data);
+    isReplayingB = data && data.outputActive;
+  });
 </script>
 
 <svelte:head>
@@ -617,13 +702,12 @@ async function switchConnection(connection) {
 <div class="row">
   <div class="column left">
     <div class="buttons">
-      
       <!-- svelte-ignore a11y-missing-attribute -->
       {#if connected}
         <button class="button is-info is-light" disabled>
           {#if heartbeat && heartbeat.stats}
             {Math.round(heartbeat.stats.activeFps)} fps, {Math.round(
-              heartbeat.stats.cpuUsage
+              heartbeat.stats.cpuUsage,
             )}% CPU, {heartbeat.stats.renderSkippedFrames} skipped frames
           {:else}Connected{/if}
         </button>
@@ -762,7 +846,7 @@ async function switchConnection(connection) {
         </button>
       {:else}
         <button class="button is-danger" disabled
-          >{errorMessage || 'Disconnected'}</button
+          >{errorMessage || "Disconnected"}</button
         >
       {/if}
       <!-- svelte-ignore a11y-missing-attribute -->
@@ -777,120 +861,103 @@ async function switchConnection(connection) {
         </span>
       </button> -->
     </div>
-  <!-- Tampilan Navbar dengan Dropdown untuk Beralih OBS -->
-  <div class="dropdown">
-    <!-- svelte-ignore a11y-missing-attribute -->
-    <a class="navbar-link">Switch OBS</a>
+    <div class="dropdown">
+      <!-- svelte-ignore a11y-missing-attribute -->
+      <a class="navbar-link">Switch OBS</a>
       <div class="dropdown-content">
-          <div class="column">
-              <h3>Event - Primary</h3>
-              {#each connections.filter(conn => conn.category === 'primary') as connection (connection.address)}
-                  {#if !connection.hidden}
-                      <!-- svelte-ignore a11y-click-events-have-key-events -->
-                      <!-- svelte-ignore a11y-no-static-element-interactions -->
-                      <!-- svelte-ignore a11y-missing-attribute -->
-                      <a on:click={() => switchConnection(connection)}>
-                          {connection.name}
-                      </a>
-                  {/if}
-              {/each}
-          </div>
-          <div class="column">
-              <h3>Event - Backup</h3>
-              {#each connections.filter(conn => conn.category === 'backup') as connection (connection.address)}
-                  <!-- svelte-ignore a11y-click-events-have-key-events -->
-                  <!-- svelte-ignore a11y-no-static-element-interactions -->
-                  <!-- svelte-ignore a11y-missing-attribute -->
-                  {#if !connection.hidden}
-                      <!-- svelte-ignore a11y-click-events-have-key-events -->
-                      <!-- svelte-ignore a11y-no-static-element-interactions -->
-                      <a on:click={() => switchConnection(connection)}>
-                          {connection.name}
-                      </a>
-                  {/if}
-              {/each}
-          </div>
-          <div class="column">
-              <h3>TV - Primary</h3>
-              {#each connections.filter(conn => conn.category === 'tv') as connection (connection.address)}
-                  {#if !connection.hidden}
-                      <!-- svelte-ignore a11y-click-events-have-key-events -->
-                      <!-- svelte-ignore a11y-no-static-element-interactions -->
-                      <!-- svelte-ignore a11y-missing-attribute -->
-                      <a on:click={() => switchConnection(connection)}>
-                          {connection.name}
-                      </a>
-                  {/if}
-              {/each}
-          </div>
-          <div class="column">
-              <h3>TV - Backup</h3>
-              {#each connections.filter(conn => conn.category === 'tv-backup') as connection (connection.address)}
-                  {#if !connection.hidden}
-                      <!-- svelte-ignore a11y-click-events-have-key-events -->
-                      <!-- svelte-ignore a11y-no-static-element-interactions -->
-                      <!-- svelte-ignore a11y-missing-attribute -->
-                      <a on:click={() => switchConnection(connection)}>
-                          {connection.name}
-                      </a>
-                  {/if}
-              {/each}
-          </div>
-  </div>
-</div>
-    <!-- Tampilan Utama -->
-<section class="sections">
-  <div class="containers">
-    {#if connectionStatus === 'Disconnected'}
-      <!-- <h1 class="title">OBS Web Control</h1>
-      <p class="subtitle">
-        Status: <strong>{connectionStatus}</strong>
-      </p> -->
-      <div class="box">
-        <h2 class="is-size-4">Current OBS Server</h2>
-        <p><strong>Name:</strong> N/A</p>
-        <p><strong>Address:</strong> N/A</p>
-        <!-- <p><strong>Password:</strong> N/A</p> -->
+        <div class="column">
+          <h3>Event - Primary</h3>
+          {#each connections.filter((conn) => conn.category === "primary") as connection (connection.address)}
+            {#if !connection.hidden}
+              <!-- svelte-ignore a11y-click-events-have-key-events -->
+              <!-- svelte-ignore a11y-no-static-element-interactions -->
+              <!-- svelte-ignore a11y-missing-attribute -->
+              <a on:click={() => switchConnection(connection)}>
+                {connection.name}
+              </a>
+            {/if}
+          {/each}
+        </div>
+        <div class="column">
+          <h3>Event - Backup</h3>
+          {#each connections.filter((conn) => conn.category === "backup") as connection (connection.address)}
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <!-- svelte-ignore a11y-no-static-element-interactions -->
+            <!-- svelte-ignore a11y-missing-attribute -->
+            {#if !connection.hidden}
+              <!-- svelte-ignore a11y-click-events-have-key-events -->
+              <!-- svelte-ignore a11y-no-static-element-interactions -->
+              <a on:click={() => switchConnection(connection)}>
+                {connection.name}
+              </a>
+            {/if}
+          {/each}
+        </div>
+        <div class="column">
+          <h3>TV - Primary</h3>
+          {#each connections.filter((conn) => conn.category === "tv") as connection (connection.address)}
+            {#if !connection.hidden}
+              <!-- svelte-ignore a11y-click-events-have-key-events -->
+              <!-- svelte-ignore a11y-no-static-element-interactions -->
+              <!-- svelte-ignore a11y-missing-attribute -->
+              <a on:click={() => switchConnection(connection)}>
+                {connection.name}
+              </a>
+            {/if}
+          {/each}
+        </div>
+        <div class="column">
+          <h3>TV - Backup</h3>
+          {#each connections.filter((conn) => conn.category === "tv-backup") as connection (connection.address)}
+            {#if !connection.hidden}
+              <!-- svelte-ignore a11y-click-events-have-key-events -->
+              <!-- svelte-ignore a11y-no-static-element-interactions -->
+              <!-- svelte-ignore a11y-missing-attribute -->
+              <a on:click={() => switchConnection(connection)}>
+                {connection.name}
+              </a>
+            {/if}
+          {/each}
+        </div>
       </div>
-    {:else}
-      <!-- <h1 class="title">OBS Web Control</h1>
-      <p class="subtitle">
-        Status: <strong>{connectionStatus}</strong>
-      </p> -->
-      <div class="box">
-        <h2 class="is-size-4">Current OBS Server</h2>
-        <p><strong>Name:</strong> {selectedConnection.name}</p>
-        <p><strong>Address:</strong> {address}</p>
-        <!-- <p><strong>Password:</strong> {password ? 'Set' : 'Not Set'}</p> -->
-        <p><strong>Status:</strong> {connectionStatus}</p>
-        <!-- {#if errorMessage}
-          <p class="has-text-danger"><strong>Error:</strong> {errorMessage}</p>
-        {/if} -->
-      </div>
-    {/if}
-    {#if connected}
-      {#if isSceneOnTop}
-        <ProgramPreview {imageFormat} />
-      {/if}
-      <SceneSwitcher
-        bind:scenes
-        buttonStyle={isIconMode ? 'icon' : 'text'}
-        {editable}
-      />
-      {#if !isSceneOnTop}
-        <ProgramPreview {imageFormat} />
-      {/if}
-      {#each scenes as scene}
-        {#if scene.sceneName.indexOf('(switch)') > 0}
-          <SourceSwitcher
-            name={scene.sceneName}
-            {imageFormat}
-            buttonStyle="screenshot"
-          />
+    </div>
+    <section class="sections">
+      <div class="containers">
+        {#if connectionStatus === "Disconnected"}
+          <div class="box">
+            <h2 class="is-size-4">Current OBS Server</h2>
+            <p><strong>Name:</strong> N/A</p>
+          </div>
+        {:else}
+          <div class="box">
+            <h2 class="is-size-4">Current OBS Server</h2>
+            <p><strong>Name:</strong> {selectedConnection.name}</p>
+            <p><strong>Status:</strong> {connectionStatus}</p>
+          </div>
         {/if}
-      {/each}
-    {:else}
-      <!-- <h1 class="subtitle"><center>
+        {#if connected}
+          {#if isSceneOnTop}
+            <ProgramPreview {imageFormat} />
+          {/if}
+          <SceneSwitcher
+            bind:scenes
+            buttonStyle={isIconMode ? "icon" : "text"}
+            {editable}
+          />
+          {#if !isSceneOnTop}
+            <ProgramPreview {imageFormat} />
+          {/if}
+          {#each scenes as scene}
+            {#if scene.sceneName.indexOf("(switch)") > 0}
+              <SourceSwitcher
+                name={scene.sceneName}
+                {imageFormat}
+                buttonStyle="screenshot"
+              />
+            {/if}
+          {/each}
+        {:else}
+          <!-- <h1 class="subtitle"><center>
         Welcome to
         <strong>OBS-web</strong>
         - the easiest way to control
@@ -938,36 +1005,35 @@ async function switchConnection(connection) {
         for v27. If you use an older version of OBS, see the
         <a href="/v4/">archived OBS-web v4</a> page.
       </p> -->
-    {/if}
+        {/if}
+      </div>
+    </section>
   </div>
-</section>
-</div>
 
-<div class="column middle">
-  <!-- <div class="box">
-  </div> -->
-  <section class="sections">
-    <div class="containers">
-    <div class="multi">
-      {#if connected && connectedB}
-      {#if isStudioMode && isStudioModeB}<center>Multi <p>Switch</p></center>
-          <ProgramPreviewMulti {imageFormat} />
-      {/if}
-      {/if}
-    </div>
-    </div>
-  </section>
-</div>
+  <div class="column middle">
+    <section class="sections">
+      <div class="containers">
+        <div class="multi">
+          {#if connected && connectedB}
+            {#if isStudioMode && isStudioModeB}<center
+                >Multi <p>Switch</p></center
+              >
+              <ProgramPreviewMulti {imageFormat} />
+            {/if}
+          {/if}
+        </div>
+      </div>
+    </section>
+  </div>
 
   <div class="column right">
     <div class="buttons">
-        
       <!-- svelte-ignore a11y-missing-attribute -->
       {#if connectedB}
         <button class="button is-info is-light" disabled>
           {#if heartbeatB && heartbeatB.stats}
             {Math.round(heartbeatB.stats.activeFps)} fps, {Math.round(
-              heartbeatB.stats.cpuUsage
+              heartbeatB.stats.cpuUsage,
             )}% CPU, {heartbeatB.stats.renderSkippedFrames} skipped frames
           {:else}Connected{/if}
         </button>
@@ -1106,7 +1172,7 @@ async function switchConnection(connection) {
         </button>
       {:else}
         <button class="button is-danger" disabled
-          >{errorMessageB || 'Disconnected'}</button
+          >{errorMessageB || "Disconnected"}</button
         >
       {/if}
       <!-- svelte-ignore a11y-missing-attribute -->
@@ -1120,128 +1186,110 @@ async function switchConnection(connection) {
           <Icon path={isFullScreenB ? mdiFullscreenExit : mdiFullscreen} />
         </span>
       </button> -->
-        
     </div>
     <div class="dropdown">
       <!-- svelte-ignore a11y-missing-attribute -->
       <a class="navbar-link">Switch OBS B</a>
-        <div class="dropdown-content">
-            <div class="column">
-                <h3>Event - Primary</h3>
-                {#each connections.filter(conn => conn.category === 'primary') as connection (connection.address)}
-                    <!-- svelte-ignore a11y-no-static-element-interactions -->
-                    <!-- svelte-ignore a11y-missing-attribute -->
-                    {#if !connection.hidden}
-                        <!-- svelte-ignore a11y-click-events-have-key-events -->
-                        <!-- svelte-ignore a11y-no-static-element-interactions -->
-                        <a on:click={() => switchConnectionB(connection)}>
-                            {connection.name}
-                        </a>
-                    {/if}
-                {/each}
-            </div>
-            <div class="column">
-                <h3>Event - Backup</h3>
-                {#each connections.filter(conn => conn.category === 'backup') as connection (connection.address)}
-                    <!-- svelte-ignore a11y-click-events-have-key-events -->
-                    <!-- svelte-ignore a11y-no-static-element-interactions -->
-                    <!-- svelte-ignore a11y-no-static-element-interactions -->
-                    <!-- svelte-ignore a11y-missing-attribute -->
-                    {#if !connection.hidden}
-                        <!-- svelte-ignore a11y-click-events-have-key-events -->
-                        <a on:click={() => switchConnectionB(connection)}>
-                            {connection.name}
-                        </a>
-                    {/if}
-                {/each}
-            </div>
-            <div class="column">
-                <h3>TV - Primary</h3>
-                {#each connections.filter(conn => conn.category === 'tv') as connection (connection.address)}
-                    <!-- svelte-ignore a11y-click-events-have-key-events -->
-                    <!-- svelte-ignore a11y-no-static-element-interactions -->
-                    <!-- svelte-ignore a11y-no-static-element-interactions -->
-                    <!-- svelte-ignore a11y-missing-attribute -->
-                    {#if !connection.hidden}
-                        <!-- svelte-ignore a11y-click-events-have-key-events -->
-                        <a on:click={() => switchConnectionB(connection)}>
-                            {connection.name}
-                        </a>
-                    {/if}
-                {/each}
-            </div>
-            <div class="column">
-                <h3>TV - Backup</h3>
-                {#each connections.filter(conn => conn.category === 'tv-backup') as connection (connection.address)}
-                    <!-- svelte-ignore a11y-click-events-have-key-events -->
-                    <!-- svelte-ignore a11y-no-static-element-interactions -->
-                    <!-- svelte-ignore a11y-no-static-element-interactions -->
-                    <!-- svelte-ignore a11y-missing-attribute -->
-                    {#if !connection.hidden}
-                        <!-- svelte-ignore a11y-click-events-have-key-events -->
-                        <a on:click={() => switchConnectionB(connection)}>
-                            {connection.name}
-                        </a>
-                    {/if}
-                {/each}
-            </div>
+      <div class="dropdown-content">
+        <div class="column">
+          <h3>Event - Primary</h3>
+          {#each connections.filter((conn) => conn.category === "primary") as connection (connection.address)}
+            <!-- svelte-ignore a11y-no-static-element-interactions -->
+            <!-- svelte-ignore a11y-missing-attribute -->
+            {#if !connection.hidden}
+              <!-- svelte-ignore a11y-click-events-have-key-events -->
+              <!-- svelte-ignore a11y-no-static-element-interactions -->
+              <a on:click={() => switchConnectionB(connection)}>
+                {connection.name}
+              </a>
+            {/if}
+          {/each}
+        </div>
+        <div class="column">
+          <h3>Event - Backup</h3>
+          {#each connections.filter((conn) => conn.category === "backup") as connection (connection.address)}
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <!-- svelte-ignore a11y-no-static-element-interactions -->
+            <!-- svelte-ignore a11y-no-static-element-interactions -->
+            <!-- svelte-ignore a11y-missing-attribute -->
+            {#if !connection.hidden}
+              <!-- svelte-ignore a11y-click-events-have-key-events -->
+              <a on:click={() => switchConnectionB(connection)}>
+                {connection.name}
+              </a>
+            {/if}
+          {/each}
+        </div>
+        <div class="column">
+          <h3>TV - Primary</h3>
+          {#each connections.filter((conn) => conn.category === "tv") as connection (connection.address)}
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <!-- svelte-ignore a11y-no-static-element-interactions -->
+            <!-- svelte-ignore a11y-no-static-element-interactions -->
+            <!-- svelte-ignore a11y-missing-attribute -->
+            {#if !connection.hidden}
+              <!-- svelte-ignore a11y-click-events-have-key-events -->
+              <a on:click={() => switchConnectionB(connection)}>
+                {connection.name}
+              </a>
+            {/if}
+          {/each}
+        </div>
+        <div class="column">
+          <h3>TV - Backup</h3>
+          {#each connections.filter((conn) => conn.category === "tv-backup") as connection (connection.address)}
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <!-- svelte-ignore a11y-no-static-element-interactions -->
+            <!-- svelte-ignore a11y-no-static-element-interactions -->
+            <!-- svelte-ignore a11y-missing-attribute -->
+            {#if !connection.hidden}
+              <!-- svelte-ignore a11y-click-events-have-key-events -->
+              <a on:click={() => switchConnectionB(connection)}>
+                {connection.name}
+              </a>
+            {/if}
+          {/each}
+        </div>
+      </div>
     </div>
-  </div>
     <!-- Tampilan Utama -->
-<section class="sections">
-  <div class="containers">
-    
-    {#if connectionStatusB === 'Disconnected'}
-      <!-- <h1 class="title">OBS Web Control</h1>
-      <p class="subtitle">
-        Status: <strong>{connectionStatus}</strong>
-      </p> -->
-      <div class="box">
-        <h2 class="is-size-4">Current OBS Server B</h2>
-        <p><strong>Name:</strong> N/A</p>
-        <p><strong>Address:</strong> N/A</p>
-        <!-- <p><strong>Password:</strong> N/A</p> -->
-      </div>
-    {:else}
-      <!-- <h1 class="title">OBS Web Control</h1>
-      <p class="subtitle">
-        Status: <strong>{connectionStatus}</strong>
-      </p> -->
-      <div class="box">
-        <h2 class="is-size-4">Current OBS Server B</h2>
-        <p><strong>Name:</strong> {selectedConnectionB.name}</p>
-        <p><strong>Address:</strong> {address}</p>
-        <!-- <p><strong>Password:</strong> {password ? 'Set' : 'Not Set'}</p> -->
-        <p><strong>Status:</strong> {connectionStatusB}</p>
-        <!-- {#if errorMessage}
-          <p class="has-text-danger"><strong>Error:</strong> {errorMessage}</p>
-        {/if} -->
-      </div>
-    {/if}
-    <!-- test -->
-      {#if connectedB}
-      {#if isSceneOnTopB}
-        <ProgramPreviewB {imageFormat} />
-      {/if}
-      <SceneSwitcherB
-        bind:scenesB
-        buttonStyle={isIconModeB ? 'icon' : 'text'}
-        {editableB}
-      />
-      {#if !isSceneOnTopB}
-        <ProgramPreviewB {imageFormat} />
-      {/if}
-      {#each scenesB as scene}
-        {#if scene.sceneName.indexOf('(switch)') > 0}
-          <SourceSwitcherB
-            name={scene.sceneName}
-            {imageFormat}
-            buttonStyle="screenshot"
-          />
+    <section class="sections">
+      <div class="containers">
+        {#if connectionStatusB === "Disconnected"}
+          <div class="box">
+            <h2 class="is-size-4">Current OBS Server B</h2>
+            <p><strong>Name:</strong> N/A</p>
+          </div>
+        {:else}
+          <div class="box">
+            <h2 class="is-size-4">Current OBS Server B</h2>
+            <p><strong>Name:</strong> {selectedConnectionB.name}</p>
+            <p><strong>Status:</strong> {connectionStatusB}</p>
+          </div>
         {/if}
-      {/each}
-    {:else}
-      <!-- <h1 class="subtitle"><center>
+        {#if connectedB}
+          {#if isSceneOnTopB}
+            <ProgramPreviewB {imageFormat} />
+          {/if}
+          <SceneSwitcherB
+            bind:scenesB
+            buttonStyle={isIconModeB ? "icon" : "text"}
+            {editableB}
+          />
+          {#if !isSceneOnTopB}
+            <ProgramPreviewB {imageFormat} />
+          {/if}
+          {#each scenesB as scene}
+            {#if scene.sceneName.indexOf("(switch)") > 0}
+              <SourceSwitcherB
+                name={scene.sceneName}
+                {imageFormat}
+                buttonStyle="screenshot"
+              />
+            {/if}
+          {/each}
+        {:else}
+          <!-- <h1 class="subtitle"><center>
         Welcome to
         <strong>OBS-web</strong>
         - the easiest way to control
@@ -1289,15 +1337,14 @@ async function switchConnection(connection) {
         for v27. If you use an older version of OBS, see the
         <a href="/v4/">archived OBS-web v4</a> page.
       </p> -->
-    {/if}
-    
+        {/if}
+      </div>
+    </section>
   </div>
-</section>
-</div>
 </div>
 
-    <!-- svelte-ignore a11y-missing-attribute -->
-    <!-- <button
+<!-- svelte-ignore a11y-missing-attribute -->
+<!-- <button
       class="navbar-burger burger"
       aria-label="menu"
       aria-expanded="false"
@@ -1308,32 +1355,15 @@ async function switchConnection(connection) {
       <span aria-hidden="true" />
     </button> -->
 
-  
-
-
-
-
-    
-    <footer class="footer">
-      <div class="content has-text-centered">
-        <p>
-          <strong>OBS-web</strong>
-          by
-          <a href="https://niekvandermaas.nl/">Niek van der Maas</a>
-          &mdash; see
-          <a href="https://github.com/Niek/obs-web">GitHub</a>
-          for source code.
-        </p>
-      </div>
-    </footer>
-
-
-
-
-<!-- <section class="section">
-  <div class="container">
-    {#if connected && connectedB}
-        <ProgramPreviewMulti {imageFormat} />
-    {/if}
+<footer class="footer">
+  <div class="content has-text-centered">
+    <p>
+      <strong>OBS-web</strong>
+      by
+      <a href="https://niekvandermaas.nl/">Niek van der Maas</a>
+      &mdash; see
+      <a href="https://github.com/Niek/obs-web">GitHub</a>
+      for source code.
+    </p>
   </div>
-</section> -->
+</footer>
