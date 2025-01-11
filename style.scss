@@ -43,6 +43,44 @@ $footer-padding: 3rem 1.5rem;
 //   // align-items: center;
 // }
 
+.container{
+  display: flex;
+
+}
+
+html {
+  background-color: #fefefe;
+  background-image: radial-gradient(#5394fd 1.2px, #fefefe 1.2px);
+  background-size: 24px 24px;
+}
+
+
+.box.kiri {
+  width: 100%;
+  margin-bottom: 10px;
+  // position: relative;
+  // animation: myfirst 5s linear 2s infinite alternate;
+  // box-shadow: 25px 0 20px -20px rgba(0, 0, 0, 0.45), -25px 0 20px -20px rgba(0, 0, 0, 0.45);
+}
+
+@keyframes myfirst {
+  0%   {background-color:red; left:0px; top:0px;}
+  25%  {background-color:yellow; left:200px; top:0px;}
+  50%  {background-color:blue; left:200px; top:200px;}
+  75%  {background-color:green; left:0px; top:200px;}
+  100% {background-color:red; left:0px; top:0px;}
+}
+
+/* Kolom kanan */
+// .boxx.kanan {
+//   width: 60%;
+//   // justify-content: center;
+//   // justify-items: center;
+//   // align-items: center;
+//   margin-left: 10px;
+//   margin-top: 10px;
+// }
+
 .rotate {
   animation: rotating 10s linear infinite;
 }
@@ -62,25 +100,41 @@ $footer-padding: 3rem 1.5rem;
 }
 .column {
   float: left;
+  // transition: transform 0.5s ease, width 0.5s ease, height 0.5s ease;
+  transition: transform 0.3s linear, width 0.3s linear, height 0.3s linear;
 }
 
-.left, .right {
-  width: 48%;
+.left {
+  width: 47%;
+}
+
+.right {
+  width: 47%;
 }
 
 .middle {
-  width: 4%;
+  width: 6%;
 }
 
-.multi {
-  padding-top: 110px;
-}
+// .left:fullscreen {
+//   background-color: black;
+// }
+
+// .multi {
+//   padding-top: 300px;
+// }
 
 .dropdown {
   position: relative;
   display: inline-block;
-  padding-right: 5px;
-  padding-bottom: 5px;
+  // padding-right: 5px;
+  padding-bottom: 7px;
+}
+.dropdownB {
+  position: relative;
+  display: inline-block;
+  // padding-right: 5px;
+  padding-bottom: 7px;
 }
 
 .dropbtn {
@@ -93,13 +147,15 @@ $footer-padding: 3rem 1.5rem;
 }
 
 .dropdown-content {
-  display: none;
-  position: relative;
+  display: flex;
+  // display: none;
+  position: absolute;
   top: 100%;
   left: 0%;
-  min-width: 38vw;
-  max-width: 46vw;
-  max-height: 300px;
+  // min-width: 38vw;
+  // max-width: 46vw;
+  width: 44vw;
+  max-height: 89vh;
   overflow-y: scroll;
   scrollbar-width: thin;
   scrollbar-color: #422800 #fbeee0;
@@ -108,9 +164,11 @@ $footer-padding: 3rem 1.5rem;
   // max-width: 950px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 100;
-  padding: 5px;
   transition: opacity 0.3s;
   flex-direction: row; /* Mengatur arah kolom ke baris */
+  flex: 1; /* Membuat kolom memiliki lebar yang sama */
+  padding: 10px;
+  // white-space: nowrap; /* Mencegah teks membungkus ke baris baru */
 }
 
 .dropdown-content::-webkit-scrollbar {
@@ -128,20 +186,23 @@ $footer-padding: 3rem 1.5rem;
   border: 2px solid #fbeee0;
 }
 
-.dropdown:hover .dropdown-content {
-  display: flex;
-}
-.dropdown-content {
-  flex: 1; /* Membuat kolom memiliki lebar yang sama */
-  padding: 10px;
-  // white-space: nowrap; /* Mencegah teks membungkus ke baris baru */
-}
+// .dropdown:hover .dropdown-content {
+//   display: flex;
+// }
 
 .dropdown-content h3 {
   margin: 0 0 10px;
   text-align: left;
   color: rgb(4, 86, 137);
 }
+
+.dropdown-content a.navbar-link {
+  cursor: pointer;
+}
+
+// .dropdown-content.visible {
+//   display: block;
+// }
 
 .dropdown-content a {
   text-decoration: none;
@@ -180,10 +241,21 @@ $footer-padding: 3rem 1.5rem;
 
 .select{
   min-width: 20px;
-  max-width: 110px;
+  max-width: 150px;
   // position: relative;
 }
 
 .navbar-link{
   font-size: 15px;
+}
+
+.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 99vw;
+  height: 99vh;
+  z-index: 999;
+  background-color: white; /* Tambahkan warna latar untuk memperjelas */
+  overflow: auto; /* Pastikan konten tetap bisa digulir */
 }

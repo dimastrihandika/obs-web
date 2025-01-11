@@ -49,7 +49,7 @@
 
     dataB = await sendCommandB('GetSceneTransitionList')
     console.log('GetSceneTransitionList', dataB)
-    transitionsB = dataB.transitions || []
+    transitions = dataB.transitions || []
     
   })
 

@@ -25,10 +25,14 @@
   }
 </script>
 
-<div class="select" style="margin: 0 .5rem .5rem 0;">
+<!-- <div class="select" style="margin: 0 .5rem .5rem 0;">
   <select bind:value={currentProfileB} title="Change Profile" on:change={setCurrentProfileB}>
   {#each profilesB as profile}
     <option value={profile}>{profile}</option>
   {/each}
   </select>
-</div>
+</div> -->
+
+<button class="button is-info is-dark" disabled style="margin: 0 .5rem .5rem 0;">
+  <span>{currentProfileB}</span>
+</button>
