@@ -222,7 +222,7 @@
   import { compareVersions } from "compare-versions";
 
   import "./style.scss";
-  import { obs, sendCommand, obsB, sendCommandB, obsD, sendCommandD } from "./obs.js";
+  import { obs, sendCommand, obsB, sendCommandB, obsC, sendCommandC, obsD, sendCommandD } from "./obs.js";
   import ProgramPreview from "./ProgramPreview.svelte";
   import ProgramPreviewMulti from "./ProgramPreviewMulti.svelte";
   import ProgramPreviewMulti2 from "./ProgramPreviewMulti2.svelte";
@@ -231,14 +231,19 @@
   import ProfileSelect from "./ProfileSelect.svelte";
   import SceneCollectionSelect from "./SceneCollectionSelect.svelte";
   import ProgramPreviewB from "./ProgramPreviewB.svelte";
+  import ProgramPreviewC from "./ProgramPreviewC.svelte";
   import ProgramPreviewD from "./ProgramPreviewD.svelte";
   import SceneSwitcherB from "./SceneSwitcherB.svelte";
+  import SceneSwitcherC from "./SceneSwitcherC.svelte";
   import SceneSwitcherD from "./SceneSwitcherD.svelte";
   import SourceSwitcherB from "./SourceSwitcherB.svelte";
+  import SourceSwitcherC from "./SourceSwitcherC.svelte";
   import SourceSwitcherD from "./SourceSwitcherD.svelte";
   import ProfileSelectB from "./ProfileSelectB.svelte";
+  import ProfileSelectC from "./ProfileSelectC.svelte";
   import ProfileSelectD from "./ProfileSelectD.svelte";
   import SceneCollectionSelectB from "./SceneCollectionSelectB.svelte";
+  import SceneCollectionSelectC from "./SceneCollectionSelectC.svelte";
   import SceneCollectionSelectD from "./SceneCollectionSelectD.svelte";
 
   onMount(async () => {
@@ -292,6 +297,18 @@
     document.addEventListener("msfullscreenchange", () => {
       isFullScreenB = document.msFullscreenElement;
     });
+
+    document.addEventListener("fullscreenchange", () => {
+      isFullScreenC = document.fullscreenElement;
+    });
+
+    document.addEventListener("webkitfullscreenchange", () => {
+      isFullScreenC = document.webkitFullscreenElement;
+    });
+
+    document.addEventListener("msfullscreenchange", () => {
+      isFullScreenC = document.msFullscreenElement;
+    });
     
     document.addEventListener("fullscreenchange", () => {
       isFullScreenD = document.fullscreenElement;
@@ -319,16 +336,21 @@
     // Export the sendCommand() function to the window objects
     window.sendCommand = sendCommand;
     window.sendCommandB = sendCommandB;
+    window.sendCommandC = sendCommandC;
     window.sendCommandD = sendCommandD;
     document.addEventListener('click', closeDropdown);
     document.addEventListener('click', closeDropdownB);
+    document.addEventListener('click', closeDropdownC);
     document.addEventListener('click', closeDropdownD);
     return () => {
       document.removeEventListener('click', closeDropdown);
     return () => {
       document.removeEventListener('click', closeDropdownB);
     return () => {
+      document.removeEventListener('click', closeDropdownC);
+    return () => {
       document.removeEventListener('click', closeDropdownD);
+    };
     };
     };
     };
@@ -397,12 +419,15 @@
   // State
   let isLeftFullscreen = false;
   let isRightFullscreen = false;
+  let isBottomLeftFullscreen = false;
   let isBottomRightFullscreen = false;
   let isDropdownVisible = false;
   let isDropdownVisibleB = false;
+  let isDropdownVisibleC = false;
   let isDropdownVisibleD = false;
   let selectedConnectionName = "Switch OBS";
   let selectedConnectionNameB = "Switch OBS";
+  let selectedConnectionNameC = "Switch OBS";
   let selectedConnectionNameD = "Switch OBS";
   let connected;
   let heartbeat = {};
@@ -417,7 +442,7 @@
   let scenes = [];
   let replayError = "";
   let errorMessage = "";
-  let imageFormat = "jpg";
+  let imageFormat = "";
 
   // State B
   let connectedB;
@@ -433,7 +458,23 @@
   let scenesB = [];
   let replayErrorB = "";
   let errorMessageB = "";
-  let imageFormatB = "jpg";
+  // let imageFormat = "jpg";
+  
+  // State C
+  let connectedC;
+  let heartbeatC = {};
+  let heartbeatIntervalC;
+  let isFullScreenC;
+  let isStudioModeC;
+  let isSceneOnTopC = window.localStorage.getItem("isSceneOnTop") || false;
+  let isVirtualCamActiveC;
+  let isIconModeC = window.localStorage.getItem("isIconMode") || false;
+  let isReplayingC;
+  let editableC = false;
+  let scenesC = [];
+  let replayErrorC = "";
+  let errorMessageC = "";
+  // let imageFormat = "jpg";
 
   // State D
   let connectedD;
@@ -449,7 +490,7 @@
   let scenesD = [];
   let replayErrorD = "";
   let errorMessageD = "";
-  let imageFormatD = "jpg";
+  // let imageFormat = "jpg";
 
   $: isSceneOnTop
     ? window.localStorage.setItem("isSceneOnTop", "true")
@@ -464,6 +505,14 @@
     : window.localStorage.removeItem("isSceneOnTop");
 
   $: isIconModeB
+    ? window.localStorage.setItem("isIconMode", "true")
+    : window.localStorage.removeItem("isIconMode");
+  
+    $: isSceneOnTopC
+    ? window.localStorage.setItem("isSceneOnTop", "true")
+    : window.localStorage.removeItem("isSceneOnTop");
+
+  $: isIconModeC
     ? window.localStorage.setItem("isIconMode", "true")
     : window.localStorage.removeItem("isIconMode");
 
@@ -496,6 +545,11 @@
     isDropdownVisibleB = false; // Close the dropdown
     switchConnectionB(connection); // Call the original connection switch logic
   }
+  function selectConnectionC(connection) {
+    selectedConnectionNameC = connection.name; // Update the dropdown name
+    isDropdownVisibleC = false; // Close the dropdown
+    switchConnectionC(connection); // Call the original connection switch logic
+  }
   function selectConnectionD(connection) {
     selectedConnectionNameD = connection.name; // Update the dropdown name
     isDropdownVisibleD = false; // Close the dropdown
@@ -507,6 +561,9 @@
   }
   function toggleDropdownB() {
     isDropdownVisibleB = !isDropdownVisibleB;
+  }
+  function toggleDropdownC() {
+    isDropdownVisibleC = !isDropdownVisibleC;
   }
   function toggleDropdownD() {
     isDropdownVisibleD = !isDropdownVisibleD;
@@ -522,6 +579,12 @@
     const dropdownB = document.querySelector('.dropdownB');
     if (dropdownB && !dropdownB.contains(event.target)) {
       isDropdownVisibleB = false;
+    }
+  }
+  function closeDropdownC(event) {
+    const dropdownC = document.querySelector('.dropdownC');
+    if (dropdownC && !dropdownC.contains(event.target)) {
+      isDropdownVisibleC = false;
     }
   }
   function closeDropdownD(event) {
@@ -540,6 +603,11 @@
   function toggleFullscreensRight(column) {
     if (column === 'right') {
       isRightFullscreen = !isRightFullscreen;
+    }
+  }
+  function toggleFullscreensBottomLeft(column) {
+    if (column === 'left') {
+      isBottomLeftFullscreen = !isBottomLeftFullscreen;
     }
   }
   function toggleFullscreensBottomRight(column) {
@@ -569,6 +637,25 @@
   }
   function toggleFullScreenB() {
     if (isFullScreenB) {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      }
+    } else {
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+      } else if (document.documentElement.webkitRequestFullscreen) {
+        document.documentElement.webkitRequestFullscreen();
+      } else if (document.documentElement.msRequestFullscreen) {
+        document.documentElement.msRequestFullscreen();
+      }
+    }
+  }
+  function toggleFullScreenC() {
+    if (isFullScreenC) {
       if (document.exitFullscreen) {
         document.exitFullscreen();
       } else if (document.webkitExitFullscreen) {
@@ -616,9 +703,14 @@
       studioModeEnabled: !isStudioModeB,
     });
   }
+  async function toggleStudioModeC() {
+    await sendCommandC("SetStudioModeEnabled", {
+      studioModeEnabled: !isStudioModeC,
+    });
+  }
   async function toggleStudioModeD() {
-    await sendCommandB("SetStudioModeEnabled", {
-      studioModeEnabled: !isStudioModeB,
+    await sendCommandD("SetStudioModeEnabled", {
+      studioModeEnabled: !isStudioModeD,
     });
   }
 
@@ -656,6 +748,9 @@
   async function startStreamB() {
     await sendCommandB("StartStream");
   }
+  async function startStreamC() {
+    await sendCommandC("StartStream");
+  }
   async function startStreamD() {
     await sendCommandD("StartStream");
   }
@@ -665,6 +760,9 @@
   }
   async function stopStreamB() {
     await sendCommandB("StopStream");
+  }
+  async function stopStreamC() {
+    await sendCommandC("StopStream");
   }
   async function stopStreamD() {
     await sendCommandD("StopStream");
@@ -723,17 +821,25 @@
   async function checkObsVersionB() {
   const { version } = await sendCommandB('GetVersion'); 
   if (version >= 30) {
-    imageFormatB = 'png';
+    imageFormat = 'png';
   } else {
-    imageFormatB = 'jpg';
+    imageFormat = 'jpg';
+  }
+}
+  async function checkObsVersionC() {
+  const { version } = await sendCommandC('GetVersion'); 
+  if (version >= 30) {
+    imageFormat = 'png';
+  } else {
+    imageFormat = 'jpg';
   }
 }
   async function checkObsVersionD() {
   const { version } = await sendCommandD('GetVersion'); 
   if (version >= 30) {
-    imageFormatD = 'png';
+    imageFormat = 'png';
   } else {
-    imageFormatD = 'jpg';
+    imageFormat = 'jpg';
   }
 }
 
@@ -790,6 +896,32 @@
       connectionStatusB = "Error connecting to OBS B: " + errorMessageB;
     }
   }
+  async function connectC() {
+    address = address || "ws://localhost:4455";
+    if (address.indexOf("://") === -1) {
+      const secure = location.protocol === "https:" || address.endsWith(":443");
+      address = (secure ? "wss://" : "ws://") + address;
+    }
+
+    console.log("Connecting to:", address, "- using password:", password);
+    await checkObsVersionC();
+    await disconnectC();
+
+    try {
+      const { obsWebSocketVersion, negotiatedRpcVersion } = await obsC.connect(
+        address,
+        password,
+      );
+      console.log(
+        `Connected to obs-websocket version ${obsWebSocketVersion} (using RPC ${negotiatedRpcVersion})`,
+      );
+      connectionStatusC = `Connected`;
+    } catch (e) {
+      console.log(e);
+      errorMessageC = e.message;
+      connectionStatusC = "Error connecting to OBS C: " + errorMessageC;
+    }
+  }
   async function connectD() {
     address = address || "ws://localhost:4455";
     if (address.indexOf("://") === -1) {
@@ -828,6 +960,12 @@
     ({ address, password } = connection); 
     connectionStatusB = "Connecting...";
     await connectB();
+  }
+  async function switchConnectionC(connection) {
+    selectedConnectionC = connection;
+    ({ address, password } = connection); 
+    connectionStatusC = "Connecting...";
+    await connectC();
   }
   async function switchConnectionD(connection) {
     selectedConnectionD = connection;
@@ -869,6 +1007,14 @@
       console.log("Disconnected from OBS.");
     }
   }
+  async function disconnectC() {
+    if (obsC) {
+      await obsC.disconnect();
+      clearInterval(heartbeatIntervalC);
+      connectionStatusC = "Disconnected From Last Session";
+      console.log("Disconnected from OBS.");
+    }
+  }
   async function disconnectD() {
     if (obsD) {
       await obsD.disconnect();
@@ -891,6 +1037,24 @@
   // OBS events
   obsB.on("ConnectionClosed", () => {
     connectedB = false;
+    window.history.pushState(
+      "",
+      document.title,
+      window.location.pathname + window.location.search,
+    ); // Remove the hash
+    console.log("Connection closed");
+  });
+  obsC.on("ConnectionClosed", () => {
+    connectedC = false;
+    window.history.pushState(
+      "",
+      document.title,
+      window.location.pathname + window.location.search,
+    ); // Remove the hash
+    console.log("Connection closed");
+  });
+  obsD.on("ConnectionClosed", () => {
+    connectedD = false;
     window.history.pushState(
       "",
       document.title,
@@ -956,7 +1120,7 @@
         .toDataURL("image/webp")
         .indexOf("data:image/webp") === 0
     ) {
-      imageFormatB = "webp";
+      imageFormat = "webp";
     }
     heartbeatIntervalB = setInterval(async () => {
       const stats = await sendCommandB("GetStats");
@@ -969,6 +1133,41 @@
       (await sendCommandB("GetStudioModeEnabled")).studioModeEnabled || false;
     isVirtualCamActiveB =
       (await sendCommandB("GetVirtualCamStatus")).outputActive || false;
+  });
+  obsC.on("Identified", async () => {
+    console.log("Connected");
+    connectedC = true;
+    document.location.hash = address; // For easy bookmarking
+    const data = await sendCommandC("GetVersion");
+    const version = data.obsWebSocketVersion || "";
+    console.log("OBS-websocket version:", version);
+    if (compareVersions(version, OBS_WEBSOCKET_LATEST_VERSION) < 0) {
+      alert(
+        "You are running an outdated OBS-websocket (version " +
+          version +
+          "), please upgrade to the latest version for full compatibility.",
+      );
+    }
+    if (
+      data.supportedImageFormats.includes("webp") &&
+      document
+        .createElement("canvas")
+        .toDataURL("image/webp")
+        .indexOf("data:image/webp") === 0
+    ) {
+      imageFormat = "webp";
+    }
+    heartbeatIntervalC = setInterval(async () => {
+      const stats = await sendCommandC("GetStats");
+      const streaming = await sendCommandC("GetStreamStatus");
+      const recording = await sendCommandC("GetRecordStatus");
+      heartbeatC = { stats, streaming, recording };
+      // console.log(heartbeat);
+    }, 1000); // Heartbeat
+    isStudioModeC =
+      (await sendCommandC("GetStudioModeEnabled")).studioModeEnabled || false;
+    isVirtualCamActiveC =
+      (await sendCommandC("GetVirtualCamStatus")).outputActive || false;
   });
   obsD.on("Identified", async () => {
     console.log("Connected");
@@ -991,7 +1190,7 @@
         .toDataURL("image/webp")
         .indexOf("data:image/webp") === 0
     ) {
-      imageFormatD = "webp";
+      imageFormat = "webp";
     }
     heartbeatIntervalD = setInterval(async () => {
       const stats = await sendCommandD("GetStats");
@@ -1024,6 +1223,15 @@
       await connectB();
     }
   });
+  obsC.on("ConnectionError", async () => {
+    errorMessageC = "Please enter your password:";
+    document.getElementById("password").focus();
+    if (!password) {
+      connectedC = false;
+    } else {
+      await connectC();
+    }
+  });
   obsD.on("ConnectionError", async () => {
     errorMessageD = "Please enter your password:";
     document.getElementById("password").focus();
@@ -1042,6 +1250,10 @@
     console.log("VirtualcamStateChanged", data.outputActive);
     isVirtualCamActiveB = data && data.outputActive;
   });
+  obsC.on("VirtualcamStateChanged", async (data) => {
+    console.log("VirtualcamStateChanged", data.outputActive);
+    isVirtualCamActiveC = data && data.outputActive;
+  });
   obsD.on("VirtualcamStateChanged", async (data) => {
     console.log("VirtualcamStateChanged", data.outputActive);
     isVirtualCamActiveD = data && data.outputActive;
@@ -1055,6 +1267,10 @@
     console.log("StudioModeStateChanged", data.studioModeEnabled);
     isStudioModeB = data && data.studioModeEnabled;
   });
+  obsC.on("StudioModeStateChanged", async (data) => {
+    console.log("StudioModeStateChanged", data.studioModeEnabled);
+    isStudioModeC = data && data.studioModeEnabled;
+  });
   obsD.on("StudioModeStateChanged", async (data) => {
     console.log("StudioModeStateChanged", data.studioModeEnabled);
     isStudioModeD = data && data.studioModeEnabled;
@@ -1067,6 +1283,10 @@
   obsB.on("ReplayBufferStateChanged", async (data) => {
     console.log("ReplayBufferStateChanged", data);
     isReplayingB = data && data.outputActive;
+  });
+  obsC.on("ReplayBufferStateChanged", async (data) => {
+    console.log("ReplayBufferStateChanged", data);
+    isReplayingC = data && data.outputActive;
   });
   obsD.on("ReplayBufferStateChanged", async (data) => {
     console.log("ReplayBufferStateChanged", data);
@@ -1371,7 +1591,8 @@
         <div class="multi">
           {#if connected && connectedB}
             {#if isStudioMode && isStudioModeB}<center>Multi</center>
-              <ProgramPreviewMulti {imageFormat} />
+              <!-- <ProgramPreviewMulti {imageFormat} /> -->
+              <ProgramPreviewMulti />
             {/if}
           {/if}
         </div>
@@ -1595,7 +1816,7 @@
       </div>
       {#if connectedB}
           {#if isSceneOnTopB}
-          <ProgramPreviewB {imageFormatB} />
+          <ProgramPreviewB {imageFormat} />
           {/if}
           <SceneSwitcherB
           bind:scenesB
@@ -1603,13 +1824,13 @@
           {editableB}
           />
           {#if !isSceneOnTopB}
-          <ProgramPreviewB {imageFormatB} />
+          <ProgramPreviewB {imageFormat} />
           {/if}
           {#each scenesB as scene}
           {#if scene.sceneName.indexOf("(switch)") > 0}
           <SourceSwitcherB
           name={scene.sceneName}
-          {imageFormatB}
+          {imageFormat}
           buttonStyle="screenshot"
           />
           {/if}
@@ -1669,6 +1890,8 @@
   </div>
 </div>
 
+<div class="line"></div>
+
 <!-- svelte-ignore a11y-missing-attribute -->
 <!-- <button
       class="navbar-burger burger"
@@ -1680,7 +1903,7 @@
       <span aria-hidden="true" />
       <span aria-hidden="true" />
     </button> -->
-<footer class="footer">
+<!-- <footer class="footer">
   <div class="content has-text-centered">
     <p>
       <strong>OBS-web</strong>
@@ -1691,10 +1914,10 @@
       for source code.
     </p>
   </div>
-</footer>
+</footer> -->
 
 <div class="row">
-  <div class="column left" class:fullscreen={isLeftFullscreen}>
+  <div class="column left" class:fullscreen={isBottomLeftFullscreen}>
     
 
     
@@ -1702,20 +1925,20 @@
       <div class="container">
         <div class="box kiri">
           <div class="buttons">
-            <div class="dropdown">
+            <div class="dropdownC">
               <!-- Display the selected connection name -->
               <!-- svelte-ignore a11y-click-events-have-key-events -->
               <!-- svelte-ignore a11y-no-static-element-interactions -->
               <!-- svelte-ignore a11y-missing-attribute -->
               <a 
                 class="navbar-link" 
-                on:click={toggleDropdown} 
-                aria-expanded={isDropdownVisible}
+                on:click={toggleDropdownC} 
+                aria-expanded={isDropdownVisibleC}
               >
-                {selectedConnectionName}
+                {selectedConnectionNameC}
               </a>
               
-              {#if isDropdownVisible}
+              {#if isDropdownVisibleC}
                 <div class="dropdown-content">
                   {#each [
                     { title: "Event - Primary", category: "primary" },
@@ -1730,7 +1953,7 @@
                           <!-- svelte-ignore a11y-click-events-have-key-events -->
                           <!-- svelte-ignore a11y-no-static-element-interactions -->
                           <!-- svelte-ignore a11y-missing-attribute -->
-                          <a on:click={() => selectConnection(connection)}>
+                          <a on:click={() => selectConnectionC(connection)}>
                             {connection.name}
                           </a>
                         {/if}
@@ -1741,30 +1964,30 @@
               {/if}
             </div>
               <!-- svelte-ignore a11y-missing-attribute -->
-              {#if connected}
-              <ProfileSelect />
-              <SceneCollectionSelect />
+              {#if connectedC}
+              <ProfileSelectC />
+              <SceneCollectionSelectC />
               <button class="button is-info is-light" disabled>
-                {#if heartbeat && heartbeat.stats}
-                  {Math.round(heartbeat.stats.activeFps)} fps, {Math.round(
-                    heartbeat.stats.cpuUsage,
-                  )}% CPU, {heartbeat.stats.renderSkippedFrames} skipped frames
+                {#if heartbeatC && heartbeatC.stats}
+                  {Math.round(heartbeatC.stats.activeFps)} fps, {Math.round(
+                    heartbeatC.stats.cpuUsage,
+                  )}% CPU, {heartbeatC.stats.renderSkippedFrames} skipped frames
                 {:else}Connected{/if}
               </button>
                 <!-- <button class="button is-info is-light" disabled>{selectedConnection.name}</button> -->
-                {#if heartbeat && heartbeat.streaming && heartbeat.streaming.outputActive}
+                {#if heartbeatC && heartbeatC.streaming && heartbeatC.streaming.outputActive}
                   <button
                     class="button is-danger"
-                    on:click={stopStream}
+                    on:click={stopStreamC}
                     title="Stop Stream"
                   >
                     <span class="icon"><Icon path={mdiAccessPointOff} /></span>
-                    <span>{formatTime(heartbeat.streaming.outputDuration)}</span>
+                    <span>{formatTime(heartbeatC.streaming.outputDuration)}</span>
                   </button>
                 {:else}
                   <button
                     class="button is-danger is-light"
-                    on:click={startStream}
+                    on:click={startStreamC}
                     title="Start Stream"
                   >
                     <span class="icon"><Icon path={mdiAccessPoint} /></span>
@@ -1823,9 +2046,9 @@
                   </button>
                 {/if} -->
                 <button
-                  class:is-light={!isStudioMode}
+                  class:is-light={!isStudioModeC}
                   class="button is-link"
-                  on:click={toggleStudioMode}
+                  on:click={toggleStudioModeC}
                   title="Toggle Studio Mode"
                 >
                   <span class="icon"><Icon path={mdiBorderVertical} /></span>
@@ -1878,12 +2101,12 @@
                 </button> -->
                 <button
                   class="button is-danger is-light"
-                  on:click={disconnect}
+                  on:click={disconnectC}
                   title="Disconnect"
                 >
                   <span class="icon"><Icon path={mdiConnection} /></span>
                 </button>
-                <button class="button is-link" on:click={() => toggleFullscreensLeft('left')}>Full Screen</button>
+                <button class="button is-link" on:click={() => toggleFullscreensBottomLeft('left')}>Full Screen</button>
                 <!-- <button class="button is-info is-light" disabled>{connectionStatus}</button> -->
               {:else}
                 <button class="button is-danger" disabled
@@ -1906,21 +2129,21 @@
           <!-- <div class="boxx kanan">
           </div> -->
         </div>
-        {#if connected}
-          {#if isSceneOnTop}
-            <ProgramPreview {imageFormat} />
+        {#if connectedC}
+          {#if isSceneOnTopC}
+            <ProgramPreviewC {imageFormat} />
           {/if}
-          <SceneSwitcher
-            bind:scenes
-            buttonStyle={isIconMode ? "icon" : "text"}
-            {editable}
+          <SceneSwitcherC
+            bind:scenesC
+            buttonStyle={isIconModeC ? "icon" : "text"}
+            {editableC}
           />
-          {#if !isSceneOnTop}
-            <ProgramPreview {imageFormat} />
+          {#if !isSceneOnTopC}
+            <ProgramPreviewC {imageFormat} />
           {/if}
-          {#each scenes as scene}
+          {#each scenesC as scene}
             {#if scene.sceneName.indexOf("(switch)") > 0}
-              <SourceSwitcher
+              <SourceSwitcherC
                 name={scene.sceneName}
                 {imageFormat}
                 buttonStyle="screenshot"
@@ -1984,9 +2207,10 @@
     <section class="sections">
       <div class="containers">
         <div class="multi">
-          {#if connected && connectedD}
-            {#if isStudioMode && isStudioModeD}<center>Multi</center>
-              <ProgramPreviewMulti2 {imageFormat} />
+          {#if connectedC && connectedD}
+            {#if isStudioModeC && isStudioModeD}<center>Multi</center>
+              <!-- <ProgramPreviewMulti2 {imageFormat} /> -->
+              <ProgramPreviewMulti2 />
             {/if}
           {/if}
         </div>
@@ -2210,7 +2434,7 @@
       </div>
       {#if connectedD}
           {#if isSceneOnTopD}
-          <ProgramPreviewD {imageFormatD} />
+          <ProgramPreviewD {imageFormat} />
           {/if}
           <SceneSwitcherD
           bind:scenesD
@@ -2218,13 +2442,13 @@
           {editableD}
           />
           {#if !isSceneOnTopD}
-          <ProgramPreviewD {imageFormatD} />
+          <ProgramPreviewD {imageFormat} />
           {/if}
           {#each scenesD as scene}
           {#if scene.sceneName.indexOf("(switch)") > 0}
           <SourceSwitcherD
           name={scene.sceneName}
-          {imageFormatD}
+          {imageFormat}
           buttonStyle="screenshot"
           />
           {/if}
@@ -2284,4 +2508,15 @@
   </div>
 </div>
 
-
+<footer class="footer">
+  <div class="content has-text-centered">
+    <p>
+      <strong>OBS-web</strong>
+      by
+      <a href="https://niekvandermaas.nl/">Niek van der Maas</a>
+      &mdash; see
+      <a href="https://github.com/Niek/obs-web">GitHub</a>
+      for source code.
+    </p>
+  </div>
+</footer>

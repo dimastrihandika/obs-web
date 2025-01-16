@@ -2,6 +2,7 @@ import OBSWebSocket from 'obs-websocket-js'
 
 export const obs = new OBSWebSocket()
 export const obsB = new OBSWebSocket()
+export const obsC = new OBSWebSocket()
 export const obsD = new OBSWebSocket()
 
 export async function sendCommand (command, params) {
@@ -26,6 +27,17 @@ export async function sendCommandB (command, params) {
   }
 }
 
+export async function sendCommandC (command, params) {
+  try {
+    // if (command.indexOf('Set') === 0)
+    //  console.log('Sending command:', command, 'with params:', params)
+    return await obsC.call(command, params || {})
+  } catch (e) {
+    console.log('Error sending command', command, ' - error is:', e.message)
+    return {}
+  }
+}
+
 export async function sendCommandD (command, params) {
   try {
     // if (command.indexOf('Set') === 0)
@@ -42,6 +54,10 @@ obs.on('error', err => {
 })
 
 obsB.on('error', err => {
+  console.error('Socket error:', err)
+})
+
+obsC.on('error', err => {
   console.error('Socket error:', err)
 })
 
