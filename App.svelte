@@ -5,69 +5,76 @@
   // Imports
   import { onMount } from "svelte";
   let connections = [
+    // VSE- Distribusi KKB 149 
+    {category: 'primary',   address: 'ws://192.168.50.149:4444',   show: false,  name: 'VSE 149 - Ex KKB Backup 1 - Court 1'},
+    
+    // Event - Distribusi KKB 149 
+    {category: 'primary',    address: 'ws://192.168.50.149:4445',  show: false,  name: 'VSE 149 - Ex KKB Backup 2 - Court 2'},
 
     // WIRECAST GEAR SENAYAN 100
-    {category: 'primary',   address: 'ws://192.168.40.178:4444',  show: true,   name: 'WG 100 - FA Cup | Middlesbrough vs Blackburn Rovers | Brentford vs Plymouth Argyle | 15801 (P)'},
-    {category: 'primary',   address: 'ws://192.168.40.178:4445',  show: true,   name: 'WG 100 - FA Cup | Birmingham vs Lincoln City | Bournemouth vs West Bromwich Albion | 15860 (P)'},
-    {category: 'primary',   address: 'ws://192.168.40.178:4446',  show: true,   name: 'WG 100 - FA Cup | Nottm Forest vs Luton Town | 16884 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.178:4444',  show: true,   name: 'WG 100 - UCL SCTV | RB Leipzig vs Sporting - Real Madrid vs RB Salzburg | 17883 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.178:4445',  show: false,   name: 'WG 100 - Persiraja Banda Aceh vs PSPS Riau | 17760 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.178:4446',  show: false,   name: 'WG 100 - FA Cup | Nottm Forest vs Luton Town | 16884 (P)'},
     
     // WIRECAST GEAR SENAYAN 101
-    {category: 'backup',    address: 'ws://192.168.40.177:4444',  show: true,   name: 'WG 101 - Middlesbrough vs Blackburn Rovers | Brentford vs Plymouth Argyle | 15801 (B)'},
-    {category: 'backup',    address: 'ws://192.168.40.177:4445',  show: true,   name: 'WG 101 - Birmingham vs Lincoln City | Bournemouth vs West Bromwich Albion | 15860 (B)'},
-    {category: 'backup',    address: 'ws://192.168.40.177:4446',  show: true,   name: 'WG 101 - FA Cup | Nottm Forest vs Luton Town | 16884 (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.177:4444',  show: true,   name: 'WG 101 - UCL SCTV | RB Leipzig vs Sporting - Real Madrid vs RB Salzburg | 17883 (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.177:4445',  show: false,   name: 'WG 101 - Persiraja Banda Aceh vs PSPS Riau | 17760 (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.177:4446',  show: false,   name: 'WG 101 - FA Cup | Nottm Forest vs Luton Town | 16884 (B)'},
     
     // WIRECAST GEAR SENAYAN 102
-    {category: 'primary',   address: 'ws://192.168.40.33:4444',   show: true,   name: 'WG 102 - Liga 1 | Dewa Utd v Arema | 17622 (P)'},
-    {category: 'primary',   address: 'ws://192.168.40.33:4445',   show: true,   name: 'WG 102 - Prematch | Dewa Utd v Arema | 17625 (P)'},
-    {category: 'primary',   address: 'ws://192.168.40.33:4446',   show: true,   name: 'WG 102 - FA Cup | Norwich v Brighton |16883 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.33:4444',   show: true,   name: 'WG 102 - UCL | Sparta Praha vs Inter | 17925  (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.33:4445',   show: true,   name: 'WG 102 - UCL | Feyenoord vs Bayern| 17873 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.33:4446',   show: false,   name: 'WG 102 - Eredivise | Heerenveen v Ajax |17629 (P)'},
     
     // WIRECAST GEAR SENAYAN 103
-    {category: 'backup',    address: 'ws://192.168.40.187:4444',  show: true,   name: 'WG 103 - Liga 1 | Dewa Utd v Arema | 17622 (B)'},
-    {category: 'backup',    address: 'ws://192.168.40.187:4445',  show: false,   name: 'WG 103 - Liga 2 | Bhayangkara vs Persijap | 17759 (B)'},
-    {category: 'backup',    address: 'ws://192.168.40.187:4446',  show: true,   name: 'WG 103 - FA Cup | Norwich v Brighton |16883 (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.187:4444',  show: true,   name: 'WG 103 - UCL | Sparta Praha vs Inter | 17925  (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.187:4445',  show: true,   name: 'WG 103 - UCL | Feyenoord vs Bayern| 17873 (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.187:4446',  show: false,   name: 'WG 103 - Eredivise | Heerenveen v Ajax |17629 (B)'},
     
     // WIRECAST GEAR SENAYAN 104
-    {category: 'primary',   address: 'ws://192.168.40.46:4444',   show: true,    name: 'WG 104 - FA Cup | Reading vs Burnley | 18255 (P)'},
-    {category: 'primary',   address: 'ws://192.168.40.46:4445',   show: true,    name: 'WG 104 - FA Cup | Exeter vs Oxford | 15861 (P)'},
-    {category: 'primary',   address: 'ws://192.168.40.46:4446',   show: true,    name: 'WG 104 - FA Cup | Sunderland vs Stoke | 18256 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.46:4444',   show: true,    name: 'WG 104 - UCL | Milan vs Girona | 17931 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.46:4445',   show: true,    name: 'WG 104 - UCL | Celtic vs Young Boys | 17874 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.46:4446',   show: false,    name: 'WG 104 - FA Cup | Crystal Palace vs Stockport County | 15801 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.46:4447',   show: false,    name: 'WG 104 - FA Cup | Southampton vs Swansea City | 18254 (P)'},
     
     // WIRECAST GEAR SENAYAN 105
-    {category: 'backup',    address: 'ws://192.168.40.45:4444',   show: true,    name: 'WG 105 - FA Cup | Reading vs Burnley | 18255 (B)'},
-    {category: 'backup',    address: 'ws://192.168.40.45:4445',   show: true,    name: 'WG 105 - FA Cup | Exeter vs Oxford | 15861 (B)'},
-    {category: 'backup',    address: 'ws://192.168.40.45:4446',   show: true,    name: 'WG 105 - FA Cup | Sunderland vs Stoke | 18256 (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.45:4444',   show: true,    name: 'WG 105 - UCL | Milan vs Girona | 17931 (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.45:4445',   show: true,    name: 'WG 105 - UCL | Celtic vs Young Boys | 17874 (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.45:4446',   show: false,    name: 'WG 105 - FA Cup | Crystal Palace vs Stockport County | 15801 (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.45:4447',   show: false,    name: 'WG 105 - FA Cup | Southampton vs Swansea City | 18254 (B)'},
     
     // WIRECAST GEAR SENAYAN 106
-    {category: 'primary',   address: 'ws://192.168.40.19:4444',   show: true,   name: 'WG 106 - PROLIGA 2025 | 18234 (P)'},
-    {category: 'primary',   address: 'ws://192.168.40.19:4445',   show: false,   name: 'WG 106 - Taoyuan Pauian Pilot vs Hiroshima Dragonflies | 17927 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.19:4444',   show: true,   name: 'WG 106 - Samsung | 18279 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.19:4445',   show: false,   name: 'WG 106 - EASL | 17926 (P)'},
     {category: 'primary',   address: 'ws://192.168.40.19:4446',   show: false,   name: 'WG 106 - Lugano vs Pafos | 18009 (P)'},
     
     // WIRECAST GEAR SENAYAN 107
-    {category: 'backup',    address: 'ws://192.168.40.186:4444',  show: true,   name: 'WG 107 - PROLIGA 2025 | 18234 (B)'},
-    {category: 'backup',    address: 'ws://192.168.40.186:4445',  show: false,   name: 'WG 107 - Taoyuan Pauian Pilot vs Hiroshima Dragonflies | 17927 (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.186:4444',  show: true,   name: 'WG 107 - Samsung | 18279 (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.186:4445',  show: false,   name: 'WG 107 - EASL | 17926 (B)'},
     {category: 'backup',    address: 'ws://192.168.40.186:4446',  show: false,   name: 'WG 107 - Lugano vs Pafos | 18009 (B)'},
     
     // WIRECAST GEAR SENAYAN 108
-    {category: 'primary',   address: 'ws://192.168.40.49:4444',   show: true,   name: 'WG 108 - BWF | 18249 (P)'},
-    {category: 'primary',   address: 'ws://192.168.40.49:4445',   show: true,   name: 'WG 108 - Turki Men | 17961 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.49:4444',   show: false,    name: 'WG 108 - Voli Turki | 15533 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.49:4445',   show: false,   name: 'WG 108 - ONEchamp (P)'},
     {category: 'primary',   address: 'ws://192.168.40.49:4446',   show: false,   name: 'WG 108 - Rapid Wien vs Copenhagen  | 18010 (P)'},
     
     // WIRECAST GEAR SENAYAN 109
-    {category: 'backup',    address: 'ws://192.168.40.185:4444',  show: true,   name: 'WG 109 - BWF | 18249 (B)'},
-    {category: 'backup',    address: 'ws://192.168.40.185:4445',  show: true,   name: 'WG 109 - Turki Men | 17961 (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.185:4444',  show: false,    name: 'WG 109 - Voli Turki | 15533 (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.185:4445',  show: false,   name: 'WG 109 - ONEChamp (B)'},
     {category: 'backup',    address: 'ws://192.168.40.185:4446',  show: false,   name: 'WG 109 - Rapid Wien vs Copenhagen  | 18010 (B)'},
     
     // WIRECAST GEAR SENAYAN 110
-    {category: 'primary',   address: 'ws://192.168.40.48:4444',   show: true,  name: 'WG 110 - LaLiga | 17320 (P)'},
+    {category: 'primary',   address: 'ws://192.168.40.48:4444',   show: false,  name: 'WG 110 - MISA (P)'},
     {category: 'primary',   address: 'ws://192.168.40.48:4445',   show: false,  name: 'WG 110 - UECL | Petro dan Pafos | 18011 (P)'},
     {category: 'primary',   address: 'ws://192.168.40.48:4446',   show: false,  name: 'WG 110 - IWF | 18148 (P)'},
     
     // WIRECAST GEAR SENAYAN 111
-    {category: 'backup',    address: 'ws://192.168.40.184:4444',  show: true,  name: 'WG 111 - LaLiga | 17320 (B)'},
+    {category: 'backup',    address: 'ws://192.168.40.184:4444',  show: false,  name: 'WG 111 - LaLiga | 17320 (B)'},
     {category: 'backup',    address: 'ws://192.168.40.184:4445',  show: false,  name: 'WG 111 - UECL | Noah v Vikingur | 18008 (B)'},
     {category: 'backup',    address: 'ws://192.168.40.184:4446',  show: false,  name: 'WG 111 - IWF | 18148  (B)'},
     
     // WIRECAST GEAR SENAYAN 112
-    {category: 'primary',   address: 'ws://192.168.40.51:4444',   show: false,  name: 'WG 112 - MISA Emtek | 7466'},
+    {category: 'primary',   address: 'ws://192.168.40.51:4444',   show: false,  name: 'WG 112 - MISA '},
     {category: 'primary',   address: 'ws://192.168.40.51:4445',   show: false,  name: 'WG 112 - UECL | Petro dan Pafos | 18011 (B)'},
     {category: 'primary',   address: 'ws://192.168.40.51:4446',   show: false,  name: 'WG 112 - Event 3 (P)'},
     
@@ -160,25 +167,69 @@
     {category: 'tv',        address: 'ws://192.168.40.43:4445',   show: true,  name: 'WG 30 - beIN 3 (P)'},
     {category: 'tv',        address: 'ws://192.168.40.43:4446',   show: true,  name: 'WG 30 - F1 Event (P)'},
 
+    // WIRECAST GEAR SENAYAN 19
+    {category: 'tv',        address: 'ws://192.168.40.36:4447',   show: true,  name: 'WG 19 - Zoo Moo (P)'},
+
+    // WIRECAST GEAR SENAYAN 22
+    {category: 'tv',        address: 'ws://192.168.40.35:4445',   show: true,  name: 'WG 22 - Mentari TV (P)'},
+
     // WIRECAST GEAR SENAYAN 31
     {category: 'tv-backup', address: 'ws://192.168.40.78:4444',   show: true,  name: 'WG 31 - beIN 1 (B)'},
     {category: 'tv-backup', address: 'ws://192.168.40.78:4445',   show: true,  name: 'WG 31 - beIN 3 (B)'},
     {category: 'tv-backup', address: 'ws://192.168.40.78:4446',   show: true,  name: 'WG 31 - F1 Event (B)'},
 
+    // WIRECAST GEAR SENAYAN 14
+    {category: 'tv',        address: 'ws://192.168.40.69:4446',   show: true,  name: 'WG 14 - Horee (P)'},
+
+    // WIRECAST GEAR SENAYAN 16
+    {category: 'tv',        address: 'ws://192.168.40.197:4444',   show: true,  name: 'WG 16 - CTV Golf 1 (P)'},
+    {category: 'tv',        address: 'ws://192.168.40.197:4445',   show: true,  name: 'WG 16 - CTV Golf 2 (P)'},
+
+    // WIRECAST GEAR SENAYAN 13
+    {category: 'tv',        address: 'ws://192.168.40.196:4444',   show: true,  name: 'WG 13 - Al Jazeera (P)'},
+
+    // WIRECAST GEAR SENAYAN 14
+    {category: 'tv',        address: 'ws://192.168.40.69:4444',   show: true,  name: 'WG 14 - Hip Hip Horee (P)'},
+    {category: 'tv',        address: 'ws://192.168.40.69:4445',   show: true,  name: 'WG 14 - TV Monde (P)'},
+    
+    // WIRECAST GEAR SENAYAN 15
+    {category: 'tv-backup', address: 'ws://192.168.40.191:4444',  show: true,  name: 'WG 15 - Zoo Moo (B)'},
+    {category: 'tv-backup', address: 'ws://192.168.40.191:4445',  show: true,  name: 'WG 15 - Mentari (B)'},
+    {category: 'tv-backup', address: 'ws://192.168.40.191:4446',  show: true,  name: 'WG 15 - Horee (B)'},
+
+    // WIRECAST GEAR SENAYAN 17
+    {category: 'tv-backup', address: 'ws://192.168.40.81:4444',   show: true,  name: 'WG 17 - CTV Golf 1 (B)'},
+    {category: 'tv-backup', address: 'ws://192.168.40.81:4445',   show: true,  name: 'WG 17 - CTV Golf 2 (B)'},
+
+    // WIRECAST GEAR SENAYAN 19
+    {category: 'tv',        address: 'ws://192.168.40.36:4444',   show: true,  name: 'WG 19 - Arirang TV (P)'},
+    {category: 'tv',        address: 'ws://192.168.40.36:4445',   show: true,  name: 'WG 19 - Jak TV (P)'},
+    {category: 'tv',        address: 'ws://192.168.40.36:4446',   show: true,  name: 'WG 19 - ABC News (P)'},
+
     // WIRECAST GEAR SENAYAN 20
     {category: 'tv',        address: 'ws://192.168.40.10:4444',   show: true,  name: 'WG 20 - NET TV (P)'},
     {category: 'tv',        address: 'ws://192.168.40.10:4445',   show: true,  name: 'WG 20 - RTV (P)'},
+    {category: 'tv',        address: 'ws://192.168.40.10:4446',   show: true,  name: 'WG 20 - EuroNews (P)'},
 
     // WIRECAST GEAR SENAYAN 22
-    {category: 'tv',        address: 'ws://192.168.40.35:4445',   show: true,  name: 'WG 22 - Mentari TV (P)'},
+    {category: 'tv',        address: 'ws://192.168.40.35:4444',   show: true,  name: 'WG 22 - Kompas TV (P)'},
+    {category: 'tv',        address: 'ws://192.168.40.35:4446',   show: true,  name: 'WG 22 - Ajwa TV (P)'},
 
     // WIRECAST GEAR SENAYAN 23
     {category: 'tv',        address: 'ws://192.168.40.65:4444',   show: true,  name: 'WG 23 - ANTV (P)'},
     {category: 'tv',        address: 'ws://192.168.40.65:4445',   show: true,  name: 'WG 23 - TV One (P)'},
+    {category: 'tv',        address: 'ws://192.168.40.65:4446',   show: true,  name: 'WG 23 - Metro TV (P)'},
+
+    // WIRECAST GEAR SENAYAN 24
+    {category: 'tv',        address: 'ws://192.168.40.57:4444',   show: true,  name: 'WG 24 - Reformed (P)'},
+    {category: 'tv',        address: 'ws://192.168.40.57:4445',   show: true,  name: 'WG 24 - UChannel (P)'},
+    {category: 'tv',        address: 'ws://192.168.40.57:4446',   show: true,  name: 'WG 24 - Africa News (P)'},
 
     //Xpert-01
     {category: 'tv',        address: 'ws://192.168.40.27:4444',   show: true,  name: 'Xpert-01 - GGS (P)'},
-    
+
+    //Embed-01
+    {category: 'tv',        address: 'ws://192.168.40.52:4446',   show: true,  name: 'Embed 01 - NTV (P)'},
   ];
   // GET ITEM FROM LOCAL STORAGE
   // let selectedConnection = connections[localStorage.getItem('selectedConnection') || 0];
@@ -458,7 +509,7 @@
   let scenesB = [];
   let replayErrorB = "";
   let errorMessageB = "";
-  // let imageFormat = "jpg";
+  let imageFormatB = "";
   
   // State C
   let connectedC;
@@ -474,7 +525,7 @@
   let scenesC = [];
   let replayErrorC = "";
   let errorMessageC = "";
-  // let imageFormat = "jpg";
+  let imageFormatC = "";
 
   // State D
   let connectedD;
@@ -490,7 +541,7 @@
   let scenesD = [];
   let replayErrorD = "";
   let errorMessageD = "";
-  // let imageFormat = "jpg";
+  let imageFormatD = "";
 
   $: isSceneOnTop
     ? window.localStorage.setItem("isSceneOnTop", "true")
@@ -1120,7 +1171,7 @@
         .toDataURL("image/webp")
         .indexOf("data:image/webp") === 0
     ) {
-      imageFormat = "webp";
+      imageFormatB = "webp";
     }
     heartbeatIntervalB = setInterval(async () => {
       const stats = await sendCommandB("GetStats");
@@ -1155,7 +1206,7 @@
         .toDataURL("image/webp")
         .indexOf("data:image/webp") === 0
     ) {
-      imageFormat = "webp";
+      imageFormatC = "webp";
     }
     heartbeatIntervalC = setInterval(async () => {
       const stats = await sendCommandC("GetStats");
@@ -1190,7 +1241,7 @@
         .toDataURL("image/webp")
         .indexOf("data:image/webp") === 0
     ) {
-      imageFormat = "webp";
+      imageFormatD = "webp";
     }
     heartbeatIntervalD = setInterval(async () => {
       const stats = await sendCommandD("GetStats");
@@ -1347,7 +1398,7 @@
             </div>
               <!-- svelte-ignore a11y-missing-attribute -->
               {#if connected}
-              <ProfileSelect />
+              <!-- <ProfileSelect />
               <SceneCollectionSelect />
               <button class="button is-info is-light" disabled>
                 {#if heartbeat && heartbeat.stats}
@@ -1355,7 +1406,7 @@
                     heartbeat.stats.cpuUsage,
                   )}% CPU, {heartbeat.stats.renderSkippedFrames} skipped frames
                 {:else}Connected{/if}
-              </button>
+              </button> -->
                 <!-- <button class="button is-info is-light" disabled>{selectedConnection.name}</button> -->
                 {#if heartbeat && heartbeat.streaming && heartbeat.streaming.outputActive}
                   <button
@@ -1488,7 +1539,9 @@
                 >
                   <span class="icon"><Icon path={mdiConnection} /></span>
                 </button>
-                <button class="button is-link" on:click={() => toggleFullscreensLeft('left')}>Full Screen</button>
+                <button class="button is-link" on:click={() => toggleFullscreensLeft('left')}><span class="icon">
+                  <Icon path={mdiFullscreen} />
+                </span></button>
                 <!-- <button class="button is-info is-light" disabled>{connectionStatus}</button> -->
               {:else}
                 <button class="button is-danger" disabled
@@ -1648,7 +1701,7 @@
           </div>
           <!-- svelte-ignore a11y-missing-attribute -->
           {#if connectedB}
-          <ProfileSelectB />
+          <!-- <ProfileSelectB />
           <SceneCollectionSelectB />
           <button class="button is-info is-light" disabled>
             {#if heartbeatB && heartbeatB.stats}
@@ -1656,7 +1709,7 @@
                 heartbeatB.stats.cpuUsage,
               )}% CPU, {heartbeatB.stats.renderSkippedFrames} skipped frames
             {:else}Connected{/if}
-          </button>
+          </button> -->
             <!-- <button class="button is-info is-light" disabled>{selectedConnectionB.name}</button> -->
             {#if heartbeatB && heartbeatB.streaming && heartbeatB.streaming.outputActive}
               <button
@@ -1789,7 +1842,9 @@
             >
               <span class="icon"><Icon path={mdiConnection} /></span>
             </button>
-            <button class="button is-link" on:click={() => toggleFullscreensRight('right')}>Full Screen</button>
+            <button class="button is-link" on:click={() => toggleFullscreensRight('right')}><span class="icon">
+              <Icon path={mdiFullscreen} />
+            </span></button>
             <!-- <button class="button is-info is-light" disabled>{connectionStatusB}</button> -->
 
           {:else}
@@ -1816,7 +1871,7 @@
       </div>
       {#if connectedB}
           {#if isSceneOnTopB}
-          <ProgramPreviewB {imageFormat} />
+          <ProgramPreviewB {imageFormatB} />
           {/if}
           <SceneSwitcherB
           bind:scenesB
@@ -1824,13 +1879,13 @@
           {editableB}
           />
           {#if !isSceneOnTopB}
-          <ProgramPreviewB {imageFormat} />
+          <ProgramPreviewB {imageFormatB} />
           {/if}
           {#each scenesB as scene}
           {#if scene.sceneName.indexOf("(switch)") > 0}
           <SourceSwitcherB
           name={scene.sceneName}
-          {imageFormat}
+          {imageFormatB}
           buttonStyle="screenshot"
           />
           {/if}
@@ -1939,7 +1994,7 @@
               </a>
               
               {#if isDropdownVisibleC}
-                <div class="dropdown-content">
+                <div class="dropdown-content2">
                   {#each [
                     { title: "Event - Primary", category: "primary" },
                     { title: "Event - Backup", category: "backup" },
@@ -1965,7 +2020,7 @@
             </div>
               <!-- svelte-ignore a11y-missing-attribute -->
               {#if connectedC}
-              <ProfileSelectC />
+              <!-- <ProfileSelectC />
               <SceneCollectionSelectC />
               <button class="button is-info is-light" disabled>
                 {#if heartbeatC && heartbeatC.stats}
@@ -1973,7 +2028,7 @@
                     heartbeatC.stats.cpuUsage,
                   )}% CPU, {heartbeatC.stats.renderSkippedFrames} skipped frames
                 {:else}Connected{/if}
-              </button>
+              </button> -->
                 <!-- <button class="button is-info is-light" disabled>{selectedConnection.name}</button> -->
                 {#if heartbeatC && heartbeatC.streaming && heartbeatC.streaming.outputActive}
                   <button
@@ -2106,7 +2161,9 @@
                 >
                   <span class="icon"><Icon path={mdiConnection} /></span>
                 </button>
-                <button class="button is-link" on:click={() => toggleFullscreensBottomLeft('left')}>Full Screen</button>
+                <button class="button is-link" on:click={() => toggleFullscreensBottomLeft('left')}><span class="icon">
+                  <Icon path={mdiFullscreen} />
+                </span></button>
                 <!-- <button class="button is-info is-light" disabled>{connectionStatus}</button> -->
               {:else}
                 <button class="button is-danger" disabled
@@ -2131,7 +2188,7 @@
         </div>
         {#if connectedC}
           {#if isSceneOnTopC}
-            <ProgramPreviewC {imageFormat} />
+            <ProgramPreviewC {imageFormatC} />
           {/if}
           <SceneSwitcherC
             bind:scenesC
@@ -2139,13 +2196,13 @@
             {editableC}
           />
           {#if !isSceneOnTopC}
-            <ProgramPreviewC {imageFormat} />
+            <ProgramPreviewC {imageFormatC} />
           {/if}
           {#each scenesC as scene}
             {#if scene.sceneName.indexOf("(switch)") > 0}
               <SourceSwitcherC
                 name={scene.sceneName}
-                {imageFormat}
+                {imageFormatC}
                 buttonStyle="screenshot"
               />
             {/if}
@@ -2240,7 +2297,7 @@
             </a>
             
             {#if isDropdownVisibleD}
-              <div class="dropdown-content">
+              <div class="dropdown-content2">
                 {#each [
                   { title: "Event - Primary", category: "primary" },
                   { title: "Event - Backup", category: "backup" },
@@ -2266,7 +2323,7 @@
           </div>
           <!-- svelte-ignore a11y-missing-attribute -->
           {#if connectedD}
-          <ProfileSelectD />
+          <!-- <ProfileSelectD />
           <SceneCollectionSelectD />
           <button class="button is-info is-light" disabled>
             {#if heartbeatD && heartbeatD.stats}
@@ -2274,7 +2331,7 @@
                 heartbeatD.stats.cpuUsage,
               )}% CPU, {heartbeatD.stats.renderSkippedFrames} skipped frames
             {:else}Connected{/if}
-          </button>
+          </button> -->
             <!-- <button class="button is-info is-light" disabled>{selectedConnectionB.name}</button> -->
             {#if heartbeatD && heartbeatD.streaming && heartbeatD.streaming.outputActive}
               <button
@@ -2407,7 +2464,9 @@
             >
               <span class="icon"><Icon path={mdiConnection} /></span>
             </button>
-            <button class="button is-link" on:click={() => toggleFullscreensBottomRight('right')}>Full Screen</button>
+            <button class="button is-link" on:click={() => toggleFullscreensBottomRight('right')}><span class="icon">
+              <Icon path={mdiFullscreen} />
+            </span></button>
             <!-- <button class="button is-info is-light" disabled>{connectionStatusB}</button> -->
 
           {:else}
@@ -2434,7 +2493,7 @@
       </div>
       {#if connectedD}
           {#if isSceneOnTopD}
-          <ProgramPreviewD {imageFormat} />
+          <ProgramPreviewD {imageFormatD} />
           {/if}
           <SceneSwitcherD
           bind:scenesD
@@ -2442,13 +2501,13 @@
           {editableD}
           />
           {#if !isSceneOnTopD}
-          <ProgramPreviewD {imageFormat} />
+          <ProgramPreviewD {imageFormatD} />
           {/if}
           {#each scenesD as scene}
           {#if scene.sceneName.indexOf("(switch)") > 0}
           <SourceSwitcherD
           name={scene.sceneName}
-          {imageFormat}
+          {imageFormatD}
           buttonStyle="screenshot"
           />
           {/if}

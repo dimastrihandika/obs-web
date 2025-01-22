@@ -30,7 +30,8 @@
 <style>
   button {
     border: none;
-    height: 4rem;
+    /* font-size: 30px; */
+    height: 3rem;
     text-align: center;
     width: 100%;
     cursor: pointer;

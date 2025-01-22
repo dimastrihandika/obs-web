@@ -51,6 +51,7 @@ $footer-padding: 3rem 1.5rem;
 //   width: 100%;
 // }
 
+
 .container{
   display: flex;
 
@@ -190,8 +191,33 @@ html {
   left: 0%;
   // min-width: 38vw;
   // max-width: 46vw;
-  width: 44vw;
+  width: 45vw;
   max-height: 89vh;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: #422800 #fbeee0;
+  background-color: #f9f9f9;
+  // min-width: 150px;
+  // max-width: 950px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  transition: opacity 0.3s;
+  flex-direction: row; /* Mengatur arah kolom ke baris */
+  flex: 1; /* Membuat kolom memiliki lebar yang sama */
+  padding: 10px;
+  // white-space: nowrap; /* Mencegah teks membungkus ke baris baru */
+}
+.dropdown-content2 {
+  // display: flex;
+  display: flex;
+  // display: none;
+  position: absolute;
+  top: 100%;
+  left: 0%;
+  // min-width: 38vw;
+  // max-width: 46vw;
+  width: 45vw;
+  max-height: 60vh;
   overflow-y: scroll;
   scrollbar-width: thin;
   scrollbar-color: #422800 #fbeee0;
@@ -273,6 +299,7 @@ html {
 
 .box{
   text-align: left;
+  padding: 1rem;
 }
 
 .select{
@@ -294,4 +321,62 @@ html {
   z-index: 999;
   background-color: white; /* Tambahkan warna latar untuk memperjelas */
   overflow: auto; /* Pastikan konten tetap bisa digulir */
+}
+
+// .dropdown-content2 a {
+//   text-decoration: none;
+//   color: black;
+//   display: inline-block;
+//   border: 1px solid;
+//   padding: 4px;
+//   box-shadow: 2px 2px #888888;
+//   margin-right: 5px;
+//   margin-bottom: 5px;
+//   width: auto;
+// }
+
+.dropdown-content2 a {
+  text-decoration: none;
+  color: black;
+  display: block;
+  border: 1px solid;
+  padding: 8px;
+  box-shadow: 3px 6px #888888;
+  margin-bottom: 10px;
+  width: auto;
+}
+
+.dropdown-content2 h3 {
+  margin: 0 0 10px;
+  text-align: left;
+  color: rgb(4, 86, 137);
+}
+
+.dropdown-content2 a.navbar-link {
+  cursor: pointer;
+}
+
+.dropdown-content2::-webkit-scrollbar {
+  width: 8px;
+}
+  
+.dropdown-content2::-webkit-scrollbar-track {
+  background: #fbeee0;
+  border-radius: 4px;
+}
+
+.dropdown-content2::-webkit-scrollbar-thumb {
+  background-color: #422800;
+  border-radius: 4px;
+  border: 2px solid #fbeee0;
+}
+
+/* Warna untuk item ganjil */
+.dropdown-content2 a:nth-child(odd) {
+  background-color: #f0f0f0; /* abu-abu muda */
+}
+
+/* Warna untuk item genap */
+.dropdown-content2 a:nth-child(even) {
+  background-color: #fdb5b5; /* putih */
 }
