@@ -27,10 +27,14 @@
   }
 </script>
 
-<div class="select" style="margin: 0 .5rem .5rem 0;">
+<!-- <div class="select" style="margin: 0 .5rem .5rem 0;">
   <select bind:value={currentCollectionB} title="Change Collection" on:change={setCurrentCollection}>
   {#each collectionsB as collection}
     <option value={collection}>{collection}</option>
   {/each}
   </select>
-</div>
+</div> -->
+
+<button class="button is-info is-dark" disabled style="margin: 0 .5rem .5rem 0;">
+  <span>{currentCollectionB}</span>
+</button>

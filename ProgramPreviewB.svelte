@@ -31,7 +31,7 @@
     console.log('GetSceneTransitionList', data)
     transitionsB = data.transitions || []
     // currentTransition = data.currentSceneTransitionName || ''
-    screenshotInterval = setInterval(getScreenshotB, 1000)
+    screenshotInterval = setInterval(getScreenshotB, 125)
   })
 
   onDestroy(() => {
@@ -75,8 +75,8 @@
     let data = await sendCommandB('GetSourceScreenshot', {
       sourceName: programSceneB,
       imageFormat,
-      imageWidth: 854,
-      imageHeight: 480
+      imageWidth: 960,
+      imageHeight: 540
     })
     if (data && data.imageData && programB) {
       programB.src = data.imageData
@@ -88,8 +88,8 @@
         data = await sendCommandB('GetSourceScreenshot', {
           sourceName: previewSceneB,
           imageFormat,
-          imageWidth: 854,
-          imageHeight: 480
+          imageWidth: 960,
+          imageHeight: 540
         })
       }
       if (data && data.imageData && previewB) {
